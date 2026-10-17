@@ -6,7 +6,16 @@ import { format } from "date-fns";
 import { toast } from "sonner";
 import { ArrowLeft, Loader2, MessageSquare } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { COMPLAINT_SELECT, meQuery, isStaff, errMsg, locationLabel, STATUS_LABEL, type Status, type AppRole } from "@/lib/ccms";
+import {
+  COMPLAINT_SELECT,
+  meQuery,
+  isStaff,
+  errMsg,
+  locationLabel,
+  STATUS_LABEL,
+  type Status,
+  type AppRole,
+} from "@/lib/ccms";
 import { StatusBadge, StatusTrack, PriorityTag } from "@/components/StatusBadge";
 import { AssignDialog } from "@/components/AssignDialog";
 import { Button } from "@/components/ui/button";
@@ -17,16 +26,24 @@ export const Route = createFileRoute("/_authenticated/complaints/$id")({
   component: Details,
 });
 
-function nextActions(status: Status, role: AppRole, isTech: boolean, isReporter: boolean): { to: Status; label: string; variant?: "default" | "outline" }[] {
+function nextActions(
+  status: Status,
+  role: AppRole,
+  isTech: boolean,
+  isReporter: boolean,
+): { to: Status; label: string; variant?: "default" | "outline" }[] {
   const staff = isStaff(role);
   const out: { to: Status; label: string; variant?: "default" | "outline" }[] = [];
-  if (status === "assigned" && (staff || isTech)) out.push({ to: "in_progress", label: "Start work" });
-  if (status === "in_progress" && (staff || isTech)) out.push({ to: "resolved", label: "Mark resolved" });
+  if (status === "assigned" && (staff || isTech))
+    out.push({ to: "in_progress", label: "Start work" });
+  if (status === "in_progress" && (staff || isTech))
+    out.push({ to: "resolved", label: "Mark resolved" });
   if (status === "resolved" && (staff || isReporter)) {
     out.push({ to: "closed", label: "Confirm & close" });
     out.push({ to: "in_progress", label: "Reopen", variant: "outline" });
   }
-  if (status === "registered" && staff) out.push({ to: "closed", label: "Close (invalid)", variant: "outline" });
+  if (status === "registered" && staff)
+    out.push({ to: "closed", label: "Close (invalid)", variant: "outline" });
   return out;
 }
 
@@ -40,7 +57,11 @@ function Details() {
   const { data: c, isLoading } = useQuery({
     queryKey: ["complaint", id],
     queryFn: async () => {
-      const { data, error } = await supabase.from("complaints").select(COMPLAINT_SELECT).eq("id", id).maybeSingle();
+      const { data, error } = await supabase
+        .from("complaints")
+        .select(COMPLAINT_SELECT)
+        .eq("id", id)
+        .maybeSingle();
       if (error) throw error;
       return data;
     },
@@ -62,7 +83,9 @@ function Details() {
     enabled: !!c?.photo_url,
     queryFn: async () => {
       if (!c?.photo_url) return null;
-      const { data } = await supabase.storage.from("complaint-photos").createSignedUrl(c.photo_url, 3600);
+      const { data } = await supabase.storage
+        .from("complaint-photos")
+        .createSignedUrl(c.photo_url, 3600);
       return data?.signedUrl ?? null;
     },
   });
@@ -82,26 +105,45 @@ function Details() {
 
   async function move(to: Status) {
     setBusy(to);
-    const { error } = await supabase.rpc("update_complaint_status", { _complaint: id, _status: to, ...(note.trim() ? { _note: note.trim() } : {}) });
+    const { error } = await supabase.rpc("update_complaint_status", {
+      _complaint: id,
+      _status: to,
+      ...(note.trim() ? { _note: note.trim() } : {}),
+    });
     setBusy(null);
-    if (error) { toast.error(errMsg(error)); return; }
+    if (error) {
+      toast.error(errMsg(error));
+      return;
+    }
     toast.success(`Moved to ${STATUS_LABEL[to]}`);
     setNote("");
     qc.invalidateQueries();
   }
   async function comment() {
-    if (note.trim().length < 2) { toast.error("Write a note first"); return; }
+    if (note.trim().length < 2) {
+      toast.error("Write a note first");
+      return;
+    }
     setBusy("note");
-    const { error } = await supabase.rpc("add_complaint_note", { _complaint: id, _note: note.trim() });
+    const { error } = await supabase.rpc("add_complaint_note", {
+      _complaint: id,
+      _note: note.trim(),
+    });
     setBusy(null);
-    if (error) { toast.error(errMsg(error)); return; }
+    if (error) {
+      toast.error(errMsg(error));
+      return;
+    }
     setNote("");
     qc.invalidateQueries({ queryKey: ["complaint", id] });
   }
 
   return (
     <div className="mx-auto max-w-5xl">
-      <Link to="/dashboard" className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+      <Link
+        to="/dashboard"
+        className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+      >
         <ArrowLeft className="size-4" /> Back
       </Link>
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
@@ -115,26 +157,46 @@ function Details() {
         <StatusBadge status={c.status} />
       </div>
 
-      <div className="mb-6 border-b pb-6"><StatusTrack status={c.status} /></div>
+      <div className="mb-6 border-b pb-6">
+        <StatusTrack status={c.status} />
+      </div>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
         <div className="space-y-6">
           <section className="border-b pb-6">
-            <h2 className="mb-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Description</h2>
+            <h2 className="mb-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+              Description
+            </h2>
             <p className="whitespace-pre-wrap">{c.description}</p>
-            {photo && <a href={photo} target="_blank" rel="noreferrer"><img src={photo} alt="Complaint" className="mt-4 max-h-80 rounded-md border object-cover" /></a>}
+            {photo && (
+              <a href={photo} target="_blank" rel="noreferrer">
+                <img
+                  src={photo}
+                  alt="Complaint"
+                  className="mt-4 max-h-80 rounded-md border object-cover"
+                />
+              </a>
+            )}
           </section>
 
           <section>
-            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Timeline</h2>
+            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+              Timeline
+            </h2>
             <ol className="relative space-y-5 border-l pl-5">
               {updates.map((u) => (
                 <li key={u.id} className="relative">
                   <span className="absolute -left-[25px] top-1 size-2.5 rounded-full border-2 border-card bg-primary" />
                   <div className="flex flex-wrap items-center gap-2 text-sm">
                     <span className="font-medium">{u.author?.full_name ?? "System"}</span>
-                    {u.new_status && u.old_status !== u.new_status ? <StatusBadge status={u.new_status} /> : <MessageSquare className="size-3.5 text-muted-foreground" />}
-                    <span className="text-xs text-muted-foreground">{format(new Date(u.created_at), "d MMM, HH:mm")}</span>
+                    {u.new_status && u.old_status !== u.new_status ? (
+                      <StatusBadge status={u.new_status} />
+                    ) : (
+                      <MessageSquare className="size-3.5 text-muted-foreground" />
+                    )}
+                    <span className="text-xs text-muted-foreground">
+                      {format(new Date(u.created_at), "d MMM, HH:mm")}
+                    </span>
                   </div>
                   {u.note && <p className="mt-1 text-sm text-muted-foreground">{u.note}</p>}
                 </li>
@@ -142,14 +204,33 @@ function Details() {
             </ol>
             {c.status !== "closed" && (
               <div className="mt-6 space-y-3 border-t pt-5">
-                <Textarea aria-label="Complaint note" value={note} onChange={(e) => setNote(e.target.value)} placeholder="Add a note" maxLength={1000} rows={3} />
+                <Textarea
+                  aria-label="Complaint note"
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                  placeholder="Add a note"
+                  maxLength={1000}
+                  rows={3}
+                />
                 <div className="flex flex-wrap gap-2">
                   {actions.map((a) => (
-                    <Button key={a.to + a.label} variant={a.variant ?? "default"} onClick={() => move(a.to)} disabled={!!busy}>
-                      {busy === a.to && <Loader2 className="animate-spin" />}{a.label}
+                    <Button
+                      key={a.to + a.label}
+                      variant={a.variant ?? "default"}
+                      onClick={() => move(a.to)}
+                      disabled={!!busy}
+                    >
+                      {busy === a.to && <Loader2 className="animate-spin" />}
+                      {a.label}
                     </Button>
                   ))}
-                  <Button variant="ghost" onClick={comment} disabled={!!busy || note.trim().length < 2}>{busy === "note" && <Loader2 className="animate-spin" />}Add note</Button>
+                  <Button
+                    variant="ghost"
+                    onClick={comment}
+                    disabled={!!busy || note.trim().length < 2}
+                  >
+                    {busy === "note" && <Loader2 className="animate-spin" />}Add note
+                  </Button>
                 </div>
               </div>
             )}
@@ -161,14 +242,24 @@ function Details() {
             <Info k="Category" v={c.category?.name} />
             <Info k="Location" v={locationLabel(c.location)} />
             {c.room && <Info k="Room / spot" v={c.room} />}
-            <Info k="Reported by" v={`${c.reporter?.full_name ?? "—"}${c.reporter?.department ? ` (${c.reporter.department})` : ""}`} />
+            <Info
+              k="Reported by"
+              v={`${c.reporter?.full_name ?? "—"}${c.reporter?.department ? ` (${c.reporter.department})` : ""}`}
+            />
             <Info k="Filed" v={format(new Date(c.created_at), "d MMM yyyy, HH:mm")} />
             <Info k="Target" v={`${c.category?.sla_hours ?? "—"}h response`} />
             <Info k="Technician" v={c.technician?.full_name ?? "Not assigned"} />
-            {c.resolved_at && <Info k="Resolved" v={format(new Date(c.resolved_at), "d MMM yyyy, HH:mm")} />}
+            {c.resolved_at && (
+              <Info k="Resolved" v={format(new Date(c.resolved_at), "d MMM yyyy, HH:mm")} />
+            )}
           </div>
           {isStaff(me.role) && c.status !== "resolved" && c.status !== "closed" && (
-            <AssignDialog complaintId={c.id} categoryId={c.category_id} current={c.assigned_technician_id} label={c.assigned_technician_id ? "Reassign technician" : "Assign technician"} />
+            <AssignDialog
+              complaintId={c.id}
+              categoryId={c.category_id}
+              current={c.assigned_technician_id}
+              label={c.assigned_technician_id ? "Reassign technician" : "Assign technician"}
+            />
           )}
         </aside>
       </div>

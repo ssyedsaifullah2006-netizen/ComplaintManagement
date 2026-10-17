@@ -17,38 +17,76 @@ export const Route = createFileRoute("/_authenticated/complaints/")({
 
 function MyComplaints() {
   const { data: me } = useQuery(meQuery);
-  const { data: rows = [], isLoading, error, refetch } = useQuery({ ...complaintsQuery("mine", { reporter: me?.id }), enabled: !!me });
+  const {
+    data: rows = [],
+    isLoading,
+    error,
+    refetch,
+  } = useQuery({ ...complaintsQuery("mine", { reporter: me?.id }), enabled: !!me });
   const [tab, setTab] = useState<Status | "all">("all");
   const [q, setQ] = useState("");
 
   const filtered = rows.filter(
-    (r) => (tab === "all" || r.status === tab) && (q === "" || `${r.title} ${r.ticket_no}`.toLowerCase().includes(q.toLowerCase())),
+    (r) =>
+      (tab === "all" || r.status === tab) &&
+      (q === "" || `${r.title} ${r.ticket_no}`.toLowerCase().includes(q.toLowerCase())),
   );
 
   return (
     <div className="mx-auto max-w-5xl">
       <PageHeader eyebrow="Tickets" title="My Complaints">
-        <Button asChild><Link to="/complaints/new"><Plus /> New complaint</Link></Button>
+        <Button asChild>
+          <Link to="/complaints/new">
+            <Plus /> New complaint
+          </Link>
+        </Button>
       </PageHeader>
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="flex flex-wrap gap-1">
           {(["all", ...STATUSES] as const).map((s) => (
-            <Button variant="ghost" size="sm"
+            <Button
+              variant="ghost"
+              size="sm"
               key={s}
               onClick={() => setTab(s)}
               aria-pressed={tab === s}
-              className={cn("rounded-full border px-3 py-1 text-xs font-medium", tab === s ? "border-primary bg-primary text-primary-foreground" : "bg-card hover:bg-muted")}
+              className={cn(
+                "rounded-full border px-3 py-1 text-xs font-medium",
+                tab === s
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "bg-card hover:bg-muted",
+              )}
             >
-              {s === "all" ? "All" : STATUS_LABEL[s]} ({s === "all" ? rows.length : rows.filter((r) => r.status === s).length})
+              {s === "all" ? "All" : STATUS_LABEL[s]} (
+              {s === "all" ? rows.length : rows.filter((r) => r.status === s).length})
             </Button>
           ))}
         </div>
         <div className="relative sm:ml-auto sm:w-64">
           <Search className="absolute left-2.5 top-2.5 size-4 text-muted-foreground" />
-          <Input aria-label="Search complaints" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search complaints" className="pl-8" />
+          <Input
+            aria-label="Search complaints"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Search complaints"
+            className="pl-8"
+          />
         </div>
       </div>
-      {error ? <div role="alert" className="space-y-3"><p>Unable to load complaints.</p><Button variant="outline" onClick={() => refetch()}>Try again</Button></div> : isLoading ? <p role="status" className="text-muted-foreground">Loading…</p> : <ComplaintList rows={filtered} empty="No complaints found." />}
+      {error ? (
+        <div role="alert" className="space-y-3">
+          <p>Unable to load complaints.</p>
+          <Button variant="outline" onClick={() => refetch()}>
+            Try again
+          </Button>
+        </div>
+      ) : isLoading ? (
+        <p role="status" className="text-muted-foreground">
+          Loading…
+        </p>
+      ) : (
+        <ComplaintList rows={filtered} empty="No complaints found." />
+      )}
     </div>
   );
 }

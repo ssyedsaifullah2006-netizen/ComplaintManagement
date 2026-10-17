@@ -11,7 +11,13 @@ import { techniciansQuery } from "@/components/AssignDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => pageHead("Admin Panel — CCMS", "Manage users, roles, categories and locations."),
@@ -35,7 +41,10 @@ function Admin() {
         supabase.from("user_roles").select("user_id, role"),
       ]);
       if (p.error) throw p.error;
-      return p.data.map((u) => ({ ...u, role: (r.data?.find((x) => x.user_id === u.id)?.role ?? "student") as AppRole }));
+      return p.data.map((u) => ({
+        ...u,
+        role: (r.data?.find((x) => x.user_id === u.id)?.role ?? "student") as AppRole,
+      }));
     },
   });
   const [q, setQ] = useState("");
@@ -44,18 +53,33 @@ function Admin() {
   if (!isAdmin) return <NoAccess />;
 
   async function setRole(userId: string, role: AppRole, category?: string) {
-    const { error } = await supabase.rpc("set_user_role", { _user: userId, _role: role, ...(category ? { _category: category } : {}) });
-    if (error) { toast.error(errMsg(error)); return; }
+    const { error } = await supabase.rpc("set_user_role", {
+      _user: userId,
+      _role: role,
+      ...(category ? { _category: category } : {}),
+    });
+    if (error) {
+      toast.error(errMsg(error));
+      return;
+    }
     toast.success("Role updated");
     qc.invalidateQueries();
   }
   async function setTechCategory(userId: string, category: string) {
-    const { error } = await supabase.from("technicians").update({ category_id: category }).eq("user_id", userId);
-    if (error) { toast.error(errMsg(error)); return; }
+    const { error } = await supabase
+      .from("technicians")
+      .update({ category_id: category })
+      .eq("user_id", userId);
+    if (error) {
+      toast.error(errMsg(error));
+      return;
+    }
     qc.invalidateQueries();
   }
 
-  const shown = users.filter((u) => `${u.full_name} ${u.email}`.toLowerCase().includes(q.toLowerCase()));
+  const shown = users.filter((u) =>
+    `${u.full_name} ${u.email}`.toLowerCase().includes(q.toLowerCase()),
+  );
 
   return (
     <div className="mx-auto max-w-6xl">
@@ -67,35 +91,78 @@ function Admin() {
         <StatCard label="Locations" value={lk?.locations.length ?? 0} />
       </div>
       <Tabs defaultValue="users">
-        <TabsList><TabsTrigger value="users">Users & roles</TabsTrigger><TabsTrigger value="categories">Categories</TabsTrigger><TabsTrigger value="locations">Locations</TabsTrigger></TabsList>
+        <TabsList>
+          <TabsTrigger value="users">Users & roles</TabsTrigger>
+          <TabsTrigger value="categories">Categories</TabsTrigger>
+          <TabsTrigger value="locations">Locations</TabsTrigger>
+        </TabsList>
 
         <TabsContent value="users" className="mt-4">
-          <Input aria-label="Search users" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search users" className="mb-3 max-w-xs bg-card" />
+          <Input
+            aria-label="Search users"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Search users"
+            className="mb-3 max-w-xs bg-card"
+          />
           <div className="overflow-x-auto rounded-lg border bg-card">
             <table className="w-full text-sm">
               <thead className="border-b bg-muted/50 text-left text-xs uppercase tracking-wider text-muted-foreground">
-                <tr><th className="p-3">Name</th><th className="p-3">Department</th><th className="p-3">Role</th><th className="p-3">Trade (technicians)</th></tr>
+                <tr>
+                  <th className="p-3">Name</th>
+                  <th className="p-3">Department</th>
+                  <th className="p-3">Role</th>
+                  <th className="p-3">Trade (technicians)</th>
+                </tr>
               </thead>
               <tbody className="divide-y">
                 {shown.map((u) => {
                   const t = techs.find((x) => x.user_id === u.id);
                   return (
                     <tr key={u.id}>
-                      <td className="p-3"><p className="font-medium">{u.full_name}</p><p className="text-xs text-muted-foreground">{u.email}</p></td>
+                      <td className="p-3">
+                        <p className="font-medium">{u.full_name}</p>
+                        <p className="text-xs text-muted-foreground">{u.email}</p>
+                      </td>
                       <td className="p-3 text-muted-foreground">{u.department ?? "—"}</td>
                       <td className="p-3">
-                        <Select value={u.role} onValueChange={(v) => setRole(u.id, v as AppRole)} disabled={u.id === me.id}>
-                          <SelectTrigger aria-label={`Role for ${u.full_name}`} className="w-40"><SelectValue /></SelectTrigger>
-                          <SelectContent>{ROLES.map((r) => <SelectItem key={r} value={r}>{ROLE_LABEL[r]}</SelectItem>)}</SelectContent>
+                        <Select
+                          value={u.role}
+                          onValueChange={(v) => setRole(u.id, v as AppRole)}
+                          disabled={u.id === me.id}
+                        >
+                          <SelectTrigger aria-label={`Role for ${u.full_name}`} className="w-40">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {ROLES.map((r) => (
+                              <SelectItem key={r} value={r}>
+                                {ROLE_LABEL[r]}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
                         </Select>
                       </td>
                       <td className="p-3">
                         {u.role === "technician" ? (
-                          <Select value={t?.category_id ?? ""} onValueChange={(v) => setTechCategory(u.id, v)}>
-                            <SelectTrigger aria-label={`Trade for ${u.full_name}`} className="w-40"><SelectValue placeholder="General" /></SelectTrigger>
-                            <SelectContent>{lk?.categories.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}</SelectContent>
+                          <Select
+                            value={t?.category_id ?? ""}
+                            onValueChange={(v) => setTechCategory(u.id, v)}
+                          >
+                            <SelectTrigger aria-label={`Trade for ${u.full_name}`} className="w-40">
+                              <SelectValue placeholder="General" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {lk?.categories.map((c) => (
+                                <SelectItem key={c.id} value={c.id}>
+                                  {c.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
                           </Select>
-                        ) : <span className="text-muted-foreground">—</span>}
+                        ) : (
+                          <span className="text-muted-foreground">—</span>
+                        )}
                       </td>
                     </tr>
                   );
@@ -107,28 +174,59 @@ function Admin() {
 
         <TabsContent value="categories" className="mt-4">
           <CrudList
-            items={(lk?.categories ?? []).map((c) => ({ id: c.id, primary: c.name, secondary: `${c.sla_hours}h target · ${c.description ?? ""}` }))}
-            fields={[{ name: "name", placeholder: "Category name" }, { name: "sla_hours", placeholder: "Target hours", type: "number" }, { name: "description", placeholder: "Description" }]}
+            items={(lk?.categories ?? []).map((c) => ({
+              id: c.id,
+              primary: c.name,
+              secondary: `${c.sla_hours}h target · ${c.description ?? ""}`,
+            }))}
+            fields={[
+              { name: "name", placeholder: "Category name" },
+              { name: "sla_hours", placeholder: "Target hours", type: "number" },
+              { name: "description", placeholder: "Description" },
+            ]}
             onAdd={async (v) => {
               const sla = Number((v["sla_hours"] ?? "") || 48);
-              if ((v["name"] ?? "").trim().length < 2 || !(sla > 0 && sla <= 720)) throw new Error("Enter a name and target hours (1–720)");
-              const { error } = await supabase.from("categories").insert({ name: (v["name"] ?? "").trim(), sla_hours: sla, description: (v["description"] ?? "") || null });
+              if ((v["name"] ?? "").trim().length < 2 || !(sla > 0 && sla <= 720))
+                throw new Error("Enter a name and target hours (1–720)");
+              const { error } = await supabase.from("categories").insert({
+                name: (v["name"] ?? "").trim(),
+                sla_hours: sla,
+                description: (v["description"] ?? "") || null,
+              });
               if (error) throw error;
             }}
-            onDelete={async (id) => { const { error } = await supabase.from("categories").delete().eq("id", id); if (error) throw error; }}
+            onDelete={async (id) => {
+              const { error } = await supabase.from("categories").delete().eq("id", id);
+              if (error) throw error;
+            }}
           />
         </TabsContent>
 
         <TabsContent value="locations" className="mt-4">
           <CrudList
-            items={(lk?.locations ?? []).map((l) => ({ id: l.id, primary: l.building, secondary: `${l.block ?? ""} · ${l.zone ?? ""}` }))}
-            fields={[{ name: "building", placeholder: "Building" }, { name: "block", placeholder: "Block / wing" }, { name: "zone", placeholder: "Zone" }]}
+            items={(lk?.locations ?? []).map((l) => ({
+              id: l.id,
+              primary: l.building,
+              secondary: `${l.block ?? ""} · ${l.zone ?? ""}`,
+            }))}
+            fields={[
+              { name: "building", placeholder: "Building" },
+              { name: "block", placeholder: "Block / wing" },
+              { name: "zone", placeholder: "Zone" },
+            ]}
             onAdd={async (v) => {
               if ((v["building"] ?? "").trim().length < 2) throw new Error("Enter a building name");
-              const { error } = await supabase.from("locations").insert({ building: (v["building"] ?? "").trim(), block: (v["block"] ?? "") || null, zone: (v["zone"] ?? "") || null });
+              const { error } = await supabase.from("locations").insert({
+                building: (v["building"] ?? "").trim(),
+                block: (v["block"] ?? "") || null,
+                zone: (v["zone"] ?? "") || null,
+              });
               if (error) throw error;
             }}
-            onDelete={async (id) => { const { error } = await supabase.from("locations").delete().eq("id", id); if (error) throw error; }}
+            onDelete={async (id) => {
+              const { error } = await supabase.from("locations").delete().eq("id", id);
+              if (error) throw error;
+            }}
           />
         </TabsContent>
       </Tabs>
@@ -136,7 +234,12 @@ function Admin() {
   );
 }
 
-function CrudList({ items, fields, onAdd, onDelete }: {
+function CrudList({
+  items,
+  fields,
+  onAdd,
+  onDelete,
+}: {
   items: { id: string; primary: string; secondary: string }[];
   fields: { name: string; placeholder: string; type?: string }[];
   onAdd: (v: Record<string, string>) => Promise<void>;
@@ -151,23 +254,50 @@ function CrudList({ items, fields, onAdd, onDelete }: {
       form.reset();
       toast.success("Added");
       qc.invalidateQueries({ queryKey: ["lookups"] });
-    } catch (e) { toast.error(errMsg(e)); }
+    } catch (e) {
+      toast.error(errMsg(e));
+    }
   }
   async function del(id: string) {
-    try { await onDelete(id); toast.success("Removed"); qc.invalidateQueries({ queryKey: ["lookups"] }); }
-    catch (e) { toast.error(errMsg(e).includes("foreign key") ? "In use by existing complaints — can't delete" : errMsg(e)); }
+    try {
+      await onDelete(id);
+      toast.success("Removed");
+      qc.invalidateQueries({ queryKey: ["lookups"] });
+    } catch (e) {
+      toast.error(
+        errMsg(e).includes("foreign key")
+          ? "In use by existing complaints — can't delete"
+          : errMsg(e),
+      );
+    }
   }
   return (
     <div className="space-y-4">
       <form onSubmit={add} className="flex flex-wrap gap-2 rounded-lg border bg-card p-3">
-        {fields.map((f) => <Input key={f.name} name={f.name} aria-label={f.placeholder} placeholder={f.placeholder} type={f.type} className="w-auto flex-1 min-w-36" />)}
-        <Button><Plus /> Add</Button>
+        {fields.map((f) => (
+          <Input
+            key={f.name}
+            name={f.name}
+            aria-label={f.placeholder}
+            placeholder={f.placeholder}
+            type={f.type}
+            className="w-auto flex-1 min-w-36"
+          />
+        ))}
+        <Button>
+          <Plus /> Add
+        </Button>
       </form>
       <ul className="divide-y rounded-lg border bg-card">
         {items.map((i) => (
           <li key={i.id} className="flex items-center justify-between gap-3 p-3 text-sm">
-            <div><p className="font-medium">{i.primary}</p><p className="text-xs text-muted-foreground">{i.secondary}</p></div>
-            <Button size="icon" variant="ghost" onClick={() => del(i.id)} aria-label="Delete"><Trash2 className="size-4" /></Button>
+            <div>
+              <p className="font-medium">{i.primary}</p>
+              <p className="text-xs text-muted-foreground">{i.secondary}</p>
+            </div>
+            <Button size="icon" variant="ghost" onClick={() => del(i.id)} aria-label="Delete">
+              <Trash2 className="size-4" />
+            </Button>
           </li>
         ))}
       </ul>

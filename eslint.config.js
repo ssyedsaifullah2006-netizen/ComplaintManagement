@@ -5,7 +5,18 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 export default tseslint.config(
-  { ignores: ["dist", ".output", ".vinxi"] },
+  {
+    // Build output and tool-generated files (marked "automatically generated"): not hand-maintained.
+    ignores: [
+      "dist",
+      ".output",
+      ".vinxi",
+      ".wrangler",
+      "src/routeTree.gen.ts",
+      "src/integrations/supabase/**",
+      "drizzle/**",
+    ],
+  },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],

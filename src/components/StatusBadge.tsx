@@ -18,7 +18,12 @@ const dotCls: Record<Status, string> = {
 
 export function StatusBadge({ status }: { status: Status }) {
   return (
-    <span className={cn("inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium whitespace-nowrap", statusCls[status])}>
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium whitespace-nowrap",
+        statusCls[status],
+      )}
+    >
       <span className={cn("size-1.5 rounded-full", dotCls[status])} />
       {STATUS_LABEL[status]}
     </span>
@@ -33,7 +38,12 @@ const prCls: Record<Priority, string> = {
 };
 export function PriorityTag({ priority }: { priority: Priority }) {
   return (
-    <span className={cn("rounded px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider", prCls[priority])}>
+    <span
+      className={cn(
+        "rounded px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider",
+        prCls[priority],
+      )}
+    >
       {priority}
     </span>
   );
@@ -47,7 +57,12 @@ export function StatusTrack({ status }: { status: Status }) {
       {steps.map((s, i) => (
         <li key={s} className="space-y-2">
           <div className={cn("h-1.5 rounded-full", i <= idx ? dotCls[status] : "bg-muted")} />
-          <p className={cn("break-words text-[11px] font-medium", i <= idx ? "text-foreground" : "text-muted-foreground")}>
+          <p
+            className={cn(
+              "break-words text-[11px] font-medium",
+              i <= idx ? "text-foreground" : "text-muted-foreground",
+            )}
+          >
             {STATUS_LABEL[s]}
           </p>
         </li>

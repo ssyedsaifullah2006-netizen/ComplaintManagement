@@ -28,7 +28,8 @@ export function isStaff(role?: AppRole | null) {
 }
 
 export function errMsg(e: unknown) {
-  if (e && typeof e === "object" && "message" in e) return String((e as { message: unknown }).message);
+  if (e && typeof e === "object" && "message" in e)
+    return String((e as { message: unknown }).message);
   return "Something went wrong";
 }
 
@@ -65,8 +66,14 @@ export const COMPLAINT_SELECT =
 
 export type ComplaintRow = Awaited<ReturnType<typeof fetchComplaints>>[number];
 
-export async function fetchComplaints(filter?: { reporter?: string | undefined; technician?: string | undefined }) {
-  let q = supabase.from("complaints").select(COMPLAINT_SELECT).order("created_at", { ascending: false });
+export async function fetchComplaints(filter?: {
+  reporter?: string | undefined;
+  technician?: string | undefined;
+}) {
+  let q = supabase
+    .from("complaints")
+    .select(COMPLAINT_SELECT)
+    .order("created_at", { ascending: false });
   if (filter?.reporter) q = q.eq("reporter_id", filter.reporter);
   if (filter?.technician) q = q.eq("assigned_technician_id", filter.technician);
   const { data, error } = await q;
@@ -74,7 +81,10 @@ export async function fetchComplaints(filter?: { reporter?: string | undefined; 
   return data;
 }
 
-export const complaintsQuery = (key: string, filter?: { reporter?: string | undefined; technician?: string | undefined }) =>
+export const complaintsQuery = (
+  key: string,
+  filter?: { reporter?: string | undefined; technician?: string | undefined },
+) =>
   queryOptions({ queryKey: ["complaints", key, filter], queryFn: () => fetchComplaints(filter) });
 
 export const unreadCountQuery = (uid?: string) =>
