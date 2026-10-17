@@ -9,7 +9,8 @@ All notable changes to this project are recorded here. The format follows
 ### Added
 - GitHub Actions workflow: install (frozen lockfile), lint, typecheck, test, build (#3, PR #10).
 - Unit tests for `src/lib/ccms.ts` domain logic; 17 tests in total (#4, PR #11).
-- Issue and pull request templates; this changelog (#7).
+- Issue and pull request templates; this changelog (#7, PR #13).
+- README, configuration item register (`CI_REGISTER.md`), contributing guide with naming conventions, and status accounting (`docs/STATUS.md`) (#5, PR #19).
 
 ### Changed
 - ESLint and Prettier ignore tool-generated files; source formatted with Prettier (#2, PR #9).
