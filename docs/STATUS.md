@@ -8,7 +8,7 @@ were actually run or performed are recorded. Last updated: 2026-10-17.
 | Version | Commit | State |
 |---|---|---|
 | Initial source | `4ed6332` | Initial commit on `main` (version `0.0.0` in CHANGELOG) |
-| `v0.1.0-rc.1` | _pending_ | Release candidate: to be tagged when this documentation is merged and CI is green on `main` |
+| `v0.1.0-rc.1` | see `git show v0.1.0-rc.1` | Release candidate (#20): tagged on the merge commit of its PR after CI is green on `main`. Audits pending, so not a final release |
 | `v0.1.0` | _pending_ | Requires FCA (#16) and PCA (#17) recorded, then CHANGELOG section dated |
 
 ## State of the initial source (before any change), run locally 2026-10-17
@@ -31,7 +31,8 @@ were actually run or performed are recorded. Last updated: 2026-10-17.
 | #4 | #11 | test | 16 unit tests for `src/lib/ccms.ts` (17 total) | 17/17 pass; 2 fail when bugs are injected; CI green: run 39053399633 |
 | #6 | #12 | chore | Package name `complaint-management`, version `0.1.0` | CI green: run 39053513745 |
 | #7 | #13 | docs | CHANGELOG, issue and PR templates | CI green: run 39053585847 |
-| #5 | #19 | docs | README, CI register, contributing guide, this page | CI result recorded on the PR |
+| #5 | #19 | docs | README, CI register, contributing guide, this page | CI green: run 39072036657 |
+| #20 | #21 | chore | Release candidate `v0.1.0-rc.1`: version and changelog section | CI result recorded on the PR |
 
 ## CI runs on `main`
 
@@ -41,6 +42,7 @@ were actually run or performed are recorded. Last updated: 2026-10-17.
 | 39053442227 | #11 | success |
 | 39053557775 | #12 | success |
 | 39053628417 | #13 | success |
+| 39072090117 | #19 | success |
 
 The CI workflow runs: `bun install --frozen-lockfile`, lint, `tsc --noEmit`, tests, build.
 
