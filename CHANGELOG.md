@@ -6,6 +6,9 @@ All notable changes to this project are recorded here. The format follows
 
 ## [Unreleased]
 
+### Added
+- Component tests for status labels, complaint rows and empty states, and technician assignment success and error paths (#14).
+
 ## [0.1.0-rc.1] - 2026-10-18
 
 Release candidate. CI is green on `main`; the Functional and Physical Configuration Audits (#16, #17) are not yet recorded, so this is not yet `0.1.0`.
