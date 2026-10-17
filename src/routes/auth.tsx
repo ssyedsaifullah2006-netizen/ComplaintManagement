@@ -9,10 +9,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export const Route = createFileRoute("/auth")({
-  head: () => pageHead("Sign in — CCMS", "Sign in or create your CCMS account to report and track campus maintenance."),
+  head: () =>
+    pageHead(
+      "Sign in — CCMS",
+      "Sign in or create your CCMS account to report and track campus maintenance.",
+    ),
   component: AuthPage,
 });
 
@@ -23,7 +33,11 @@ const loginSchema = z.object({
 const signupSchema = loginSchema.extend({
   full_name: z.string().trim().min(2, "Enter your full name").max(80),
   department: z.string().trim().max(80).optional(),
-  phone: z.string().trim().regex(/^[0-9+\-\s]{0,15}$/, "Enter a valid phone").optional(),
+  phone: z
+    .string()
+    .trim()
+    .regex(/^[0-9+\-\s]{0,15}$/, "Enter a valid phone")
+    .optional(),
   role: z.enum(["student", "faculty"]),
 });
 
@@ -78,48 +92,109 @@ function AuthPage() {
     else toast.success("Check your inbox to confirm your email, then sign in.");
   }
 
-  const err = (k: string) => errors[k] && <p role="alert" className="text-xs text-destructive">{errors[k]}</p>;
+  const err = (k: string) =>
+    errors[k] && (
+      <p role="alert" className="text-xs text-destructive">
+        {errors[k]}
+      </p>
+    );
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-5 py-10">
-        <div className="w-full max-w-sm">
-          <div className="mb-8 flex items-center gap-3">
-            <span className="grid size-10 place-items-center rounded-md bg-primary text-primary-foreground"><Building2 className="size-5" /></span>
-            <div><h1 className="text-2xl font-semibold">CCMS</h1><p className="text-sm text-muted-foreground">Campus Complaint & Maintenance System</p></div>
+      <div className="w-full max-w-sm">
+        <div className="mb-8 flex items-center gap-3">
+          <span className="grid size-10 place-items-center rounded-md bg-primary text-primary-foreground">
+            <Building2 className="size-5" />
+          </span>
+          <div>
+            <h1 className="text-2xl font-semibold">CCMS</h1>
+            <p className="text-sm text-muted-foreground">Campus Complaint & Maintenance System</p>
           </div>
-          <Tabs defaultValue="login" onValueChange={() => setErrors({})}>
-            <TabsList className="mb-6 grid w-full grid-cols-2">
-              <TabsTrigger value="login">Sign in</TabsTrigger>
-              <TabsTrigger value="signup">Create account</TabsTrigger>
-            </TabsList>
-            <TabsContent value="login">
-              <form onSubmit={onLogin} className="space-y-5" noValidate>
-                <div className="space-y-1.5"><Label htmlFor="l-email">Email</Label><Input id="l-email" name="email" type="email" autoComplete="email" required aria-invalid={!!errors["email"]} />{err("email")}</div>
-                <div className="space-y-1.5"><Label htmlFor="l-pw">Password</Label><Input id="l-pw" name="password" type="password" autoComplete="current-password" required aria-invalid={!!errors["password"]} />{err("password")}</div>
-                <Button className="w-full" disabled={busy}>{busy && <Loader2 className="animate-spin" />}Sign in</Button>
-              </form>
-            </TabsContent>
-            <TabsContent value="signup">
-              <form onSubmit={onSignup} className="space-y-4" noValidate>
-                <div className="space-y-1.5"><Label htmlFor="s-name">Full name</Label><Input id="s-name" name="full_name" autoComplete="name" required />{err("full_name")}</div>
-                <div className="space-y-1.5"><Label htmlFor="s-email">Email</Label><Input id="s-email" name="email" type="email" autoComplete="email" required />{err("email")}</div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-1.5">
-                    <Label htmlFor="s-role">Role</Label>
-                    <Select value={role} onValueChange={(v) => setRole(v as "student" | "faculty")}>
-                      <SelectTrigger id="s-role"><SelectValue /></SelectTrigger>
-                      <SelectContent><SelectItem value="student">Student</SelectItem><SelectItem value="faculty">Faculty</SelectItem></SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-1.5"><Label htmlFor="s-dept">Department</Label><Input id="s-dept" name="department" placeholder="e.g. CSE" />{err("department")}</div>
-                </div>
-                <div className="space-y-1.5"><Label htmlFor="s-phone">Phone (optional)</Label><Input id="s-phone" name="phone" type="tel" autoComplete="tel" />{err("phone")}</div>
-                <div className="space-y-1.5"><Label htmlFor="s-pw">Password</Label><Input id="s-pw" name="password" type="password" autoComplete="new-password" />{err("password")}</div>
-                <Button className="w-full" disabled={busy}>{busy && <Loader2 className="animate-spin" />}Create account</Button>
-              </form>
-            </TabsContent>
-          </Tabs>
         </div>
+        <Tabs defaultValue="login" onValueChange={() => setErrors({})}>
+          <TabsList className="mb-6 grid w-full grid-cols-2">
+            <TabsTrigger value="login">Sign in</TabsTrigger>
+            <TabsTrigger value="signup">Create account</TabsTrigger>
+          </TabsList>
+          <TabsContent value="login">
+            <form onSubmit={onLogin} className="space-y-5" noValidate>
+              <div className="space-y-1.5">
+                <Label htmlFor="l-email">Email</Label>
+                <Input
+                  id="l-email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  aria-invalid={!!errors["email"]}
+                />
+                {err("email")}
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="l-pw">Password</Label>
+                <Input
+                  id="l-pw"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  aria-invalid={!!errors["password"]}
+                />
+                {err("password")}
+              </div>
+              <Button className="w-full" disabled={busy}>
+                {busy && <Loader2 className="animate-spin" />}Sign in
+              </Button>
+            </form>
+          </TabsContent>
+          <TabsContent value="signup">
+            <form onSubmit={onSignup} className="space-y-4" noValidate>
+              <div className="space-y-1.5">
+                <Label htmlFor="s-name">Full name</Label>
+                <Input id="s-name" name="full_name" autoComplete="name" required />
+                {err("full_name")}
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="s-email">Email</Label>
+                <Input id="s-email" name="email" type="email" autoComplete="email" required />
+                {err("email")}
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <Label htmlFor="s-role">Role</Label>
+                  <Select value={role} onValueChange={(v) => setRole(v as "student" | "faculty")}>
+                    <SelectTrigger id="s-role">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="student">Student</SelectItem>
+                      <SelectItem value="faculty">Faculty</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="s-dept">Department</Label>
+                  <Input id="s-dept" name="department" placeholder="e.g. CSE" />
+                  {err("department")}
+                </div>
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="s-phone">Phone (optional)</Label>
+                <Input id="s-phone" name="phone" type="tel" autoComplete="tel" />
+                {err("phone")}
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="s-pw">Password</Label>
+                <Input id="s-pw" name="password" type="password" autoComplete="new-password" />
+                {err("password")}
+              </div>
+              <Button className="w-full" disabled={busy}>
+                {busy && <Loader2 className="animate-spin" />}Create account
+              </Button>
+            </form>
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 }
