@@ -6,6 +6,10 @@ All notable changes to this project are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.1.0-rc.1] - 2026-10-18
+
+Release candidate. CI is green on `main`; the Functional and Physical Configuration Audits (#16, #17) are not yet recorded, so this is not yet `0.1.0`.
+
 ### Added
 - GitHub Actions workflow: install (frozen lockfile), lint, typecheck, test, build (#3, PR #10).
 - Unit tests for `src/lib/ccms.ts` domain logic; 17 tests in total (#4, PR #11).
