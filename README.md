@@ -3,8 +3,8 @@
 [![CI](https://github.com/ssyedsaifullah2006-netizen/ComplaintManagement/actions/workflows/ci.yml/badge.svg)](https://github.com/ssyedsaifullah2006-netizen/ComplaintManagement/actions/workflows/ci.yml)
 
 A campus complaint and maintenance system. Students and faculty register complaints about campus
-facilities; estate managers assign them to technicians; technicians update progress until the
-complaint is resolved and closed.
+facilities; available technicians are assigned automatically when a complaint is filed, and estate
+managers can assign complaints that have no available technician.
 
 ## Complaint lifecycle
 
@@ -12,15 +12,19 @@ complaint is resolved and closed.
 
 Roles: student, faculty, technician, estate manager, admin.
 
+New complaints are automatically assigned to an available technician in the matching category,
+prioritizing technicians with fewer active jobs. If no available technician matches the category,
+the system falls back to another available technician; if nobody is available, the complaint stays
+registered for the estate manager to assign.
+
 ## Tech stack
 
 React 19, TypeScript, Vite, TanStack Start / Router / Query, Tailwind CSS 4, Radix UI (shadcn-style
 components), Supabase (auth, Postgres with row-level security, storage), Vitest, ESLint, Prettier.
 Package manager: **bun** (`bun.lock`).
 
-The database schema and access rules (row-level security policies, the `assign_technician`,
-`update_complaint_status` and `set_user_role` functions, notification triggers) are in
-[`drizzle/migrations/0000_migration.sql`](drizzle/migrations/0000_migration.sql). Design notes are in
+The database schema and access rules (row-level security policies, assignment and status functions,
+notification triggers) are in [`drizzle/migrations/`](drizzle/migrations/). Design notes are in
 [`AGENTS.md`](AGENTS.md).
 
 ## Getting started

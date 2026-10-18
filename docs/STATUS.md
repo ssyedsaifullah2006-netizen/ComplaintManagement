@@ -33,6 +33,7 @@ were actually run or performed are recorded. Last updated: 2026-10-18.
 | #7 | #13 | docs | CHANGELOG, issue and PR templates | CI green: run 39053585847 |
 | #5 | #19 | docs | README, CI register, contributing guide, this page | CI green: run 39072036657 |
 | #20 | #21 | chore | Release candidate `v0.1.0-rc.1`: version and changelog section | CI result recorded on the PR |
+| #28 | pending | feat | Automatic technician assignment; application source and database trigger migration | Local frozen install, lint, typecheck, tests, build, audit and Drizzle migration check passed; no live database migration applied |
 
 ## CI runs on `main`
 
