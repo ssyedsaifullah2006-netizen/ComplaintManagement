@@ -1,14 +1,14 @@
 # Configuration Status Accounting
 
 Records the state of the configuration items, changes, CI runs, audits and releases. Only results that
-were actually run or performed are recorded. Last updated: 2026-10-17.
+were actually run or performed are recorded. Last updated: 2026-10-18.
 
 ## Baselines and releases
 
 | Version | Commit | State |
 |---|---|---|
 | Initial source | `4ed6332` | Initial commit on `main` (version `0.0.0` in CHANGELOG) |
-| `v0.1.0-rc.1` | see `git show v0.1.0-rc.1` | Release candidate (#20): tagged on the merge commit of its PR after CI is green on `main`. Audits pending, so not a final release |
+| `v0.1.0-rc.1` | see `git show v0.1.0-rc.1` | Release candidate (#20): tagged on the merge commit of its PR after CI is green on `main`. FCA pending; not a final release |
 | `v0.1.0` | _pending_ | Requires FCA (#16) and PCA (#17) recorded, then CHANGELOG section dated |
 
 ## State of the initial source (before any change), run locally 2026-10-17
@@ -60,4 +60,4 @@ The CI workflow runs: `bun install --frozen-lockfile`, lint, `tsc --noEmit`, tes
 | Audit | State | Tracked in |
 |---|---|---|
 | Functional Configuration Audit (FCA) | **Not yet performed** | #16 |
-| Physical Configuration Audit (PCA) | **Not yet performed** | #17 |
+| Physical Configuration Audit (PCA) | **Performed 2026-10-18**; lightweight tag discrepancy tracked in #24 | [PCA.md](PCA.md), #17 |
