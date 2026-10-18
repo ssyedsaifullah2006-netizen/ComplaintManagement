@@ -2,7 +2,7 @@ import { pageHead } from "@/lib/page-head";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { z } from "zod";
+import z from "zod";
 import { toast } from "sonner";
 import { ImagePlus, Loader2, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";

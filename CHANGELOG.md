@@ -10,6 +10,11 @@ All notable changes to this project are recorded here. The format follows
 
 - Resolved the React Refresh lint warnings by moving the technician query out of `AssignDialog` and documenting the shadcn UI rule exception (#15).
 
+### Fixed
+
+- Fixed Zod schema imports so the test suite also runs with Bun/Vitest on Windows.
+- Overrode the vulnerable `esbuild` dependency used by Drizzle's deprecated loader.
+
 ## [0.1.0-rc.1] - 2026-10-18
 
 Release candidate. CI is green on `main`; the Functional and Physical Configuration Audits (#16, #17) are not yet recorded, so this is not yet `0.1.0`.
