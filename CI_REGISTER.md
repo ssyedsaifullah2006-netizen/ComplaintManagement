@@ -19,7 +19,7 @@ Package: `complaint-management` (version in `package.json`)
 | CI-11 | Environment template and ignore rules | `.env.example`, `.gitignore` | Config | Variable names only; a real `.env` is never committed |
 | CI-12 | Public assets | `public/` | Asset | |
 | CI-13 | Project documentation | `README.md`, `AGENTS.md`, `roadmap.md`, `src/routes/README.md` | Doc | |
-| CI-14 | SCM documentation | `CI_REGISTER.md`, `CONTRIBUTING.md`, `CHANGELOG.md`, `docs/STATUS.md` | Doc | |
+| CI-14 | SCM and audit documentation | `CI_REGISTER.md`, `CONTRIBUTING.md`, `CHANGELOG.md`, `docs/` | Doc | |
 | CI-15 | Issue and pull request templates | `.github/ISSUE_TEMPLATE/`, `.github/PULL_REQUEST_TEMPLATE.md` | Config | |
 
 ## Identification and control
