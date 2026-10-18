@@ -1,7 +1,7 @@
 import { pageHead } from "@/lib/page-head";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { z } from "zod";
+import z from "zod";
 import { toast } from "sonner";
 import { Loader2, Building2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
