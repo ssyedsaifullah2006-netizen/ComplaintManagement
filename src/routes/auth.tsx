@@ -1,5 +1,5 @@
 import { pageHead } from "@/lib/page-head";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import z from "zod";
 import { toast } from "sonner";
@@ -141,6 +141,14 @@ function AuthPage() {
                   aria-invalid={!!errors["password"]}
                 />
                 {err("password")}
+              </div>
+              <div className="text-right">
+                <Link
+                  to="/forgot-password"
+                  className="text-sm text-primary underline-offset-4 hover:underline"
+                >
+                  Forgot password?
+                </Link>
               </div>
               <Button className="w-full" disabled={busy}>
                 {busy && <Loader2 className="animate-spin" />}Sign in

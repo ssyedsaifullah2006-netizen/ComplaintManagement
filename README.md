@@ -35,6 +35,10 @@ cp .env.example .env      # fill in your Supabase project values; never commit .
 bun run dev
 ```
 
+Use **Forgot password?** on the sign-in page to request a reset email and choose a new password.
+Configure the Supabase Auth redirect URL allow-list to include each local and deployed app origin
+at `/reset-password`.
+
 | Command | Purpose |
 |---|---|
 | `bun run dev` | Start the dev server |
