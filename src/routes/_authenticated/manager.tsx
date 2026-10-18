@@ -7,9 +7,14 @@ import {
   complaintsQuery,
   lookupsQuery,
   isStaff,
+  isOverdue,
+  sortComplaints,
+  SORT_LABEL,
   STATUSES,
   STATUS_LABEL,
+  type ComplaintSort,
 } from "@/lib/ccms";
+import { Checkbox } from "@/components/ui/checkbox";
 import { PageHeader, StatCard, NoAccess } from "@/components/AppShell";
 import { ComplaintList } from "@/components/ComplaintTable";
 import { AssignDialog, techniciansQuery } from "@/components/AssignDialog";
@@ -38,20 +43,24 @@ function Manager() {
   const { data: techs = [] } = useQuery({ ...techniciansQuery, enabled: staff });
   const [status, setStatus] = useState("all");
   const [cat, setCat] = useState("all");
+  const [overdueOnly, setOverdueOnly] = useState(false);
+  const [sort, setSort] = useState<ComplaintSort>("newest");
 
   if (!me) return null;
   if (!staff) return <NoAccess />;
 
-  const filtered = rows.filter(
-    (r) => (status === "all" || r.status === status) && (cat === "all" || r.category_id === cat),
+  const now = new Date();
+  const filtered = sortComplaints(
+    rows.filter(
+      (r) =>
+        (status === "all" || r.status === status) &&
+        (cat === "all" || r.category_id === cat) &&
+        (!overdueOnly || isOverdue(r, now)),
+    ),
+    sort,
   );
   const unassigned = rows.filter((r) => r.status === "registered");
-  const overdue = rows.filter(
-    (r) =>
-      r.status !== "resolved" &&
-      r.status !== "closed" &&
-      Date.now() - new Date(r.created_at).getTime() > (r.category?.sla_hours ?? 48) * 36e5,
-  );
+  const overdue = rows.filter((r) => isOverdue(r, now));
   const load = techs.map((t) => ({
     ...t,
     active: rows.filter(
@@ -71,7 +80,13 @@ function Manager() {
           label="In progress"
           value={rows.filter((r) => r.status === "in_progress").length}
         />
-        <StatCard label="Past target time" value={overdue.length} hint="Open beyond category SLA" />
+        <StatCard
+          label="Past target time"
+          value={overdue.length}
+          hint={overdueOnly ? "Showing overdue only · click to clear" : "Open beyond category SLA"}
+          onClick={() => setOverdueOnly((v) => !v)}
+          active={overdueOnly}
+        />
         <StatCard
           label="Awaiting closure"
           value={rows.filter((r) => r.status === "resolved").length}
@@ -107,6 +122,22 @@ function Manager() {
                 ))}
               </SelectContent>
             </Select>
+            <Select value={sort} onValueChange={(v) => setSort(v as ComplaintSort)}>
+              <SelectTrigger aria-label="Sort complaints" className="w-44 bg-card">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {(Object.keys(SORT_LABEL) as ComplaintSort[]).map((s) => (
+                  <SelectItem key={s} value={s}>
+                    {SORT_LABEL[s]}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <label className="flex items-center gap-2 self-center text-sm">
+              <Checkbox checked={overdueOnly} onCheckedChange={(v) => setOverdueOnly(v === true)} />
+              Overdue only
+            </label>
             <span className="ml-auto self-center text-sm text-muted-foreground">
               {filtered.length} shown
             </span>

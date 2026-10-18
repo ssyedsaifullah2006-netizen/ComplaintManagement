@@ -1,5 +1,15 @@
 import { cn } from "@/lib/utils";
-import { STATUS_LABEL, type Status, type Priority } from "@/lib/ccms";
+import { format } from "date-fns";
+import { Clock } from "lucide-react";
+import {
+  STATUS_LABEL,
+  slaDeadline,
+  slaLabel,
+  slaState,
+  type Status,
+  type Priority,
+  type SlaState,
+} from "@/lib/ccms";
 
 const statusCls: Record<Status, string> = {
   registered: "bg-st-registered/12 text-st-registered border-st-registered/30",
@@ -68,5 +78,38 @@ export function StatusTrack({ status }: { status: Status }) {
         </li>
       ))}
     </ol>
+  );
+}
+
+const slaCls: Record<SlaState, string> = {
+  on_track: "text-muted-foreground border-border",
+  due_soon: "bg-st-progress/15 text-st-progress border-st-progress/40",
+  overdue: "bg-destructive/10 text-destructive border-destructive/40",
+  met: "bg-st-resolved/12 text-st-resolved border-st-resolved/30",
+  missed: "text-destructive border-destructive/30",
+  none: "",
+};
+
+export function SlaBadge({
+  complaint,
+  now,
+}: {
+  complaint: Parameters<typeof slaState>[0];
+  now?: Date;
+}) {
+  const state = slaState(complaint, now);
+  const label = slaLabel(complaint, now);
+  if (state === "none" || !label) return null;
+  return (
+    <span
+      title={`Response target: ${format(slaDeadline(complaint), "d MMM yyyy, HH:mm")}`}
+      className={cn(
+        "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium whitespace-nowrap",
+        slaCls[state],
+      )}
+    >
+      <Clock className="size-3" aria-hidden />
+      {label}
+    </span>
   );
 }

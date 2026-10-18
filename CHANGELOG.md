@@ -10,6 +10,7 @@ All notable changes to this project are recorded here. The format follows
 - GitHub Actions workflow: install (frozen lockfile), lint, typecheck, test, build (#3, PR #10).
 - Unit tests for `src/lib/ccms.ts` domain logic; 17 tests in total (#4, PR #11).
 - Issue and pull request templates; this changelog (#7).
+- Response-target (SLA) tracking: every complaint list and the complaint page show whether a ticket is on track, due soon, overdue, or met/missed its category target. The estate desk gains an "Overdue only" filter (also toggled from the "Past target time" card) and sorting by newest, oldest or due soonest. SLA rules live in `src/lib/ccms.ts` with unit tests.
 
 ### Changed
 - ESLint and Prettier ignore tool-generated files; source formatted with Prettier (#2, PR #9).

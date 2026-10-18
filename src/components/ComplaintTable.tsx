@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { formatDistanceToNow } from "date-fns";
 import type { ReactNode } from "react";
 import { type ComplaintRow, locationLabel } from "@/lib/ccms";
-import { StatusBadge, PriorityTag } from "./StatusBadge";
+import { StatusBadge, PriorityTag, SlaBadge } from "./StatusBadge";
 
 export function ComplaintList({
   rows,
@@ -32,6 +32,7 @@ export function ComplaintList({
                 <span className="font-mono text-xs text-muted-foreground">{c.ticket_no}</span>
                 <PriorityTag priority={c.priority} />
                 <span className="text-xs text-muted-foreground">· {c.category?.name}</span>
+                <SlaBadge complaint={c} />
               </div>
               <p className="mt-1 break-words font-medium">{c.title}</p>
               <p className="mt-0.5 text-xs text-muted-foreground">
