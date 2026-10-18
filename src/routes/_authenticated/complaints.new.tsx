@@ -107,7 +107,9 @@ function NewComplaint() {
         .select("id, ticket_no")
         .single();
       if (error) throw error;
-      toast.success(`Complaint ${data.ticket_no} registered`);
+      toast.success(
+        `Complaint ${data.ticket_no} registered. Check its details for assignment status.`,
+      );
       qc.invalidateQueries();
       navigate({ to: "/complaints/$id", params: { id: data.id } });
     } catch (e) {

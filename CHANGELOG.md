@@ -6,6 +6,10 @@ All notable changes to this project are recorded here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- Automatic technician assignment on complaint submission, preferring category matches and balancing active workload (#28).
+
 ### Changed
 
 - Resolved the React Refresh lint warnings by moving the technician query out of `AssignDialog` and documenting the shadcn UI rule exception (#15).
