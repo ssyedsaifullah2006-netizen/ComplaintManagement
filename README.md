@@ -51,7 +51,8 @@ at `/reset-password`.
 
 Current verification state, with evidence, is in [`docs/STATUS.md`](docs/STATUS.md). The feature list
 above is the intended scope; whether each feature works end to end against a live Supabase project is
-recorded by the Functional Configuration Audit, not assumed here.
+recorded by the [Functional Configuration Audit](docs/FCA.md), not assumed here. SCM1/SCM2
+traceability and known compliance gaps are recorded in [docs/SCM_COMPLIANCE.md](docs/SCM_COMPLIANCE.md).
 
 ## Software configuration management
 
@@ -60,4 +61,7 @@ recorded by the Functional Configuration Audit, not assumed here.
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Branching, commit and tag naming, pull requests, review, release rules |
 | [CI_REGISTER.md](CI_REGISTER.md) | Configuration items and their identifiers |
 | [docs/STATUS.md](docs/STATUS.md) | Configuration status accounting (changes, CI runs, audits, releases) |
+| [docs/SCM_COMPLIANCE.md](docs/SCM_COMPLIANCE.md) | SCM1/SCM2 mapping, evidence and known gaps |
+| [docs/FCA.md](docs/FCA.md) | Functional audit status and verification evidence |
+| [docs/PCA.md](docs/PCA.md) | Physical configuration audit |
 | [CHANGELOG.md](CHANGELOG.md) | Notable changes per version |

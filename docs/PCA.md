@@ -1,50 +1,52 @@
 # Physical Configuration Audit (PCA)
 
-- **Auditor:** AI assistant using Copilot SDK in VS Code, operating with the authorized `Naresh-Y4` GitHub account
+## Re-audit of current main
+
+- **Auditor:** AI assistant using Copilot SDK in VS Code
 - **Date:** 2026-10-18
-- **Repository baseline:** `main` at `337b347765fb97050df4c7aa72700cdba7f2937f`
-- **Release baseline:** `v0.1.0-rc.1`
+- **Repository baseline:** `aeaf61e939d0615f15ef31ae13075a6411a13bd1` (main after PR #31)
+- **Release identifier:** `v0.1.0-rc.1`
 
-## Scope and method
+### Method
 
-Compared every path in `CI_REGISTER.md` with the tracked file inventory from
-`git ls-tree -r --name-only main`. Directory entries were checked for at least one tracked
-descendant. Reviewed the top-level tracked files against the register, checked the registered
-version against `package.json`, the release tag, and the changelog, and verified that no `.env`
-file is tracked.
+Compared the registered CI paths in `CI_REGISTER.md` against
+`git ls-tree -r --name-only origin/main`, checked for a tracked `.env`, and compared package,
+changelog, and tag identifiers. Directories were accepted when the tracked tree had at least one
+descendant. The audit covers the stated main commit only; changes in this pull request are not yet
+part of that baseline.
 
-## Results
+### Results
 
-| CI    | Result | Evidence                                                                           |
-| ----- | ------ | ---------------------------------------------------------------------------------- |
-| CI-01 | Pass   | All registered application source paths exist in the baseline.                     |
-| CI-02 | Pass   | `src/integrations/supabase/` contains tracked files.                               |
-| CI-03 | Pass   | `src/routeTree.gen.ts` exists.                                                     |
-| CI-04 | Pass   | `drizzle/migrations/` contains tracked migration and metadata files.               |
-| CI-05 | Pass   | All three registered database tooling paths exist.                                 |
-| CI-06 | Pass   | `package.json`, `bun.lock`, and `bunfig.toml` exist.                               |
-| CI-07 | Pass   | All three registered build configuration paths exist.                              |
-| CI-08 | Pass   | All registered test code and configuration paths exist.                            |
-| CI-09 | Pass   | All registered lint and format configuration paths exist.                          |
-| CI-10 | Pass   | `.github/workflows/ci.yml` exists.                                                 |
-| CI-11 | Pass   | `.env.example` and `.gitignore` exist; no `.env` file is tracked.                  |
-| CI-12 | Pass   | `public/` contains tracked assets.                                                 |
-| CI-13 | Pass   | All registered project documentation paths exist.                                  |
-| CI-14 | Pass   | All registered SCM and audit documentation paths exist after this report is added. |
-| CI-15 | Pass   | The issue-template directory and pull request template exist.                      |
+| CI | Result | Evidence at `aeaf61e` |
+|---|---|---|
+| CI-01 | Pass | All registered source directories and entry files exist |
+| CI-02 | Pass | Supabase integration directory has tracked files |
+| CI-03 | Pass | Generated route tree exists |
+| CI-04 | Pass | Migration directory has tracked SQL and metadata |
+| CI-05 | Pass | Registered database tooling paths exist |
+| CI-06 | Pass | Package manifest, lockfile, and Bun config exist |
+| CI-07 | Pass | Build configuration paths exist |
+| CI-08 | Pass | Registered tests and test configuration exist, including `src/lib/auth.test.ts` |
+| CI-09 | Pass | Registered lint/format configuration paths exist |
+| CI-10 | Pass | GitHub Actions workflow exists |
+| CI-11 | Pass | Environment template and ignore rules exist; no `.env` is tracked |
+| CI-12 | Pass | Public assets directory contains tracked files |
+| CI-13 | Pass | Registered project documentation paths exist |
+| CI-14 | Pass | SCM and audit documentation directory and registered files exist |
+| CI-15 | Pass | Issue template directory and pull request template exist |
 
-The package name and version are `complaint-management` and `0.1.0-rc.1`. Both the release
-tag name (`v0.1.0-rc.1`) and the changelog heading (`[0.1.0-rc.1]`) match the package version,
-and the tagged commit is an ancestor of the audited `main` commit.
+The package version is `0.1.0-rc.1`. The tag name and changelog heading match. However,
+`git cat-file -t v0.1.0-rc.1` returns `commit`, so this published tag is lightweight rather than
+annotated as required by `CONTRIBUTING.md`. The discrepancy was recorded in issue #24 and was not
+rewritten. Future release tags must be annotated.
 
-One discrepancy was found: `git cat-file -t v0.1.0-rc.1` reports `commit`, meaning the published
-release tag is lightweight. `CONTRIBUTING.md` requires annotated tags. The existing published
-tag was not changed; follow-up is tracked in issue #24.
-
-The report adds `docs/` to CI-14 so the PCA (and future audit records) are registered. The
-initial configuration-path inventory found no other missing or unregistered configuration items.
+This physical-path audit does not establish that every SCM1/SCM2 deliverable exists: plans,
+approved design/requirements documents, formal test artifacts, manuals, and the deployment guide
+are absent. The current repository compliance record lists those gaps in
+[SCM_COMPLIANCE.md](SCM_COMPLIANCE.md) and issue #36.
 
 ## Conclusion
 
-All registered paths in the audited baseline exist, and the package, release tag name, and
-changelog version agree. The lightweight-tag policy discrepancy is recorded in issue #24.
+Every path currently registered in `CI_REGISTER.md` was present at baseline `aeaf61e`, and no
+`.env` file was tracked. The tag metadata discrepancy remains. This PCA does not establish a final
+release baseline or substitute for the incomplete FCA recorded in [FCA.md](FCA.md).
