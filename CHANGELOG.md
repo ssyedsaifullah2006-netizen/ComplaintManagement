@@ -9,6 +9,7 @@ All notable changes to this project are recorded here. The format follows
 ### Added
 
 - Automatic technician assignment on complaint submission, preferring category matches and balancing active workload (#28).
+- Password recovery with emailed reset links and validated password updates (#30).
 
 ### Changed
 

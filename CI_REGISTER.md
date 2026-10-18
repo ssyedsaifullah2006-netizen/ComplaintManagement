@@ -13,7 +13,7 @@ Package: `complaint-management` (version in `package.json`)
 | CI-05 | Database tooling configuration | `drizzle.config.ts`, `drizzle/schema.ts`, `supabase/config.toml` | Config | `schema.ts` is intentionally blank (generated) |
 | CI-06 | Dependency manifest and lockfile | `package.json`, `bun.lock`, `bunfig.toml` | Config | Lockfile resolves from the public npm registry |
 | CI-07 | Build configuration | `vite.config.ts`, `tsconfig.json`, `components.json` | Config | |
-| CI-08 | Test code and configuration | `src/test/`, `src/lib/ccms.test.ts`, `vitest.config.ts` | Test | |
+| CI-08 | Test code and configuration | `src/test/`, `src/lib/ccms.test.ts`, `src/lib/auth.test.ts`, `vitest.config.ts` | Test | |
 | CI-09 | Lint and format configuration | `eslint.config.js`, `.prettierrc`, `.prettierignore` | Config | |
 | CI-10 | CI/CD workflow | `.github/workflows/ci.yml` | Config | |
 | CI-11 | Environment template and ignore rules | `.env.example`, `.gitignore` | Config | Variable names only; a real `.env` is never committed |
