@@ -1,6 +1,6 @@
 {
   "name": "complaint-management",
-  "version": "0.1.0",
+  "version": "0.1.0-rc.1",
   "private": true,
   "sideEffects": false,
   "type": "module",
@@ -15,7 +15,8 @@
     "test:watch": "vitest"
   },
   "overrides": {
-    "rolldown": "1.2.1"
+    "rolldown": "1.2.1",
+    "@esbuild-kit/core-utils>esbuild": "^0.25.12"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
