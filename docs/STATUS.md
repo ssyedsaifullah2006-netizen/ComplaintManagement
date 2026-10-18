@@ -1,65 +1,78 @@
 # Configuration Status Accounting
 
-Records the state of the configuration items, changes, CI runs, audits and releases. Only results that
-were actually run or performed are recorded. Last updated: 2026-10-18.
+Tracks repository baselines, changes, CI results, audits, and unresolved configuration or product
+requirements. Status is evidence-based; a merged PR or green CI does not by itself prove live
+backend behavior or an approved product baseline. Last updated: 2026-10-18.
 
 ## Baselines and releases
 
-| Version | Commit | State |
+| Version / baseline | Commit | State |
 |---|---|---|
-| Initial source | `4ed6332` | Initial commit on `main` (version `0.0.0` in CHANGELOG) |
-| `v0.1.0-rc.1` | see `git show v0.1.0-rc.1` | Release candidate (#20): tagged on the merge commit of its PR after CI is green on `main`. FCA pending; not a final release |
-| `v0.1.0` | _pending_ | Requires FCA (#16) and PCA (#17) recorded, then CHANGELOG section dated |
+| Initial source | `4ed6332` | Initial repository source, version `0.0.0` |
+| `v0.1.0-rc.1` | `44803d3` | Published release candidate; tag is lightweight, not annotated. Not a final release |
+| Current main | `aeaf61e` | Includes merged PR #31; current package version remains `0.1.0-rc.1` |
+| `v0.1.0` | Pending | Do not tag until FCA evidence, PCA, release review, and dated changelog entry are complete |
 
-## State of the initial source (before any change), run locally 2026-10-17
+`v0.1.0-rc.1` points to a commit object instead of an annotated tag object. Issue #24 records the
+policy discrepancy. The published tag will not be rewritten; use annotated tags for future releases.
 
-| Check | Result |
+## CI lifecycle and accountable ownership
+
+SCM1 logical names and repository mappings are in [CI_REGISTER.md](../CI_REGISTER.md). Logical
+`v1.0` identifiers do not mean a CI is approved or baselined. Git commits and PRs identify exact
+revisions. A complete per-CI individual owner/approval register is not available in the source
+documents or GitHub records reviewed; owners and approvals are therefore recorded as **not
+established**, not inferred from a single commit author. PR review/merge and CI results are evidence
+of change control, not substitutes for named CI approval.
+
+## Change and verification log
+
+| Issue | PR | Change | Repository/CI evidence | Live behavior evidence |
+|---|---|---|---|---|
+| #1-#7 | #8-#13 | Lockfile, lint, CI, tests, package identity, and SCM documentation | Recorded in the historical entries below and GitHub PRs | Not applicable to all items |
+| #14 | #22 | Component test proposal | PR closed without merge; no component test suite from that PR is present | Not applicable |
+| #15 | #23 | Resolve React Refresh lint warnings | Merged; CI passed | Not applicable |
+| #16 | — | Functional Configuration Audit | Issue closed after owner comment “everything is verified”; no reproducible FCA report/evidence was present at baseline | Incomplete / not independently evidenced |
+| #17 | #25 | Physical Configuration Audit | PCA recorded; rechecked against current main `aeaf61e` in [PCA.md](PCA.md) | Does not test live backend |
+| #20 | #21 | Prepare `v0.1.0-rc.1` | Merged; release candidate exists | Not applicable |
+| #24 | — | Record lightweight tag discrepancy | Closed; tag unchanged and remains lightweight | Not applicable |
+| #28 | #29 | Automatic technician assignment | Merged; main CI run `39117462892` passed | Owner reports migration applied through Lovable Cloud; not independently verified from this environment |
+| #30 | #31 | Password recovery | Merged; main CI run `39122094293` passed | Email delivery and deployed redirect allow-list not verified |
+| #32 | — | Align SCM records with SCM1/SCM2 | In progress in this pull request | Not applicable |
+
+Historical initial-source checks (run 2026-10-17) are retained as a snapshot, not current results:
+
+| Check | Initial-source result |
 |---|---|
-| `bun install --frozen-lockfile` | **Failed**: lockfile pinned to a private package cache (HTTP 403) |
-| `bun run lint` | **Failed**: 715 errors (714 formatting, 1 `prefer-const` in a generated file), 7 warnings |
+| `bun install --frozen-lockfile` | Failed: lockfile pinned to a private package cache (HTTP 403) |
+| `bun run lint` | Failed: 715 errors and 7 warnings |
 | `bunx tsc --noEmit` | Passed |
-| `bun run test` | Passed: 1 test (routing only) |
+| `bun run test` | Passed: 1 routing test |
 | `bun run build` | Passed |
 
-## Change log
+The current CI workflow runs `bun install --frozen-lockfile`, lint, TypeScript checking, tests, and
+production build. The latest verified main runs after PR #29 and #31 passed: `39117462892` and
+`39122094293`, respectively. These validate the repository build, not live service configuration.
 
-| Issue | PR | Type | Change | Result |
-|---|---|---|---|---|
-| #1 | #8 | fix | Regenerate `bun.lock` from the public registry | `--frozen-lockfile` exits 0 from a clean `node_modules` (local) |
-| #2 | #9 | chore | Ignore generated files; apply Prettier | lint 0 errors, 7 warnings; tsc, tests, build pass (local) |
-| #3 | #10 | ci | GitHub Actions workflow | First run green: run 39053319328 |
-| #4 | #11 | test | 16 unit tests for `src/lib/ccms.ts` (17 total) | 17/17 pass; 2 fail when bugs are injected; CI green: run 39053399633 |
-| #6 | #12 | chore | Package name `complaint-management`, version `0.1.0` | CI green: run 39053513745 |
-| #7 | #13 | docs | CHANGELOG, issue and PR templates | CI green: run 39053585847 |
-| #5 | #19 | docs | README, CI register, contributing guide, this page | CI green: run 39072036657 |
-| #20 | #21 | chore | Release candidate `v0.1.0-rc.1`: version and changelog section | CI result recorded on the PR |
-| #28 | #29 | feat | Automatic technician assignment; application source and database trigger migration | Local frozen install, lint, typecheck, tests, build, audit and Drizzle migration check passed; no live database migration applied |
-| #30 | #31 | feat | Password recovery flow; application source and validation/routing tests | Local frozen install, lint, typecheck, tests and production build passed; password email delivery not verified against live auth |
+## Open discrepancies and follow-up work
 
-## CI runs on `main`
-
-| Run | After PR | Result |
+| Gap | State | Tracked in |
 |---|---|---|
-| 39053377451 | #10 | success |
-| 39053442227 | #11 | success |
-| 39053557775 | #12 | success |
-| 39053628417 | #13 | success |
-| 39072090117 | #19 | success |
+| SCM1/SCM2 logical CI mapping, status accounting, tool claims, and audit evidence | This documentation change | #32 |
+| FCA evidence absent despite issue #16 being closed | FCA record explicitly incomplete; must be tested in the authorized live environment | #32 |
+| Reports/export and service-performance analytics | Manager dashboard has summary metrics only | #33 |
+| Real-time complaint updates | Current query polling is every 30 seconds | #34 |
+| Technician complaint reporting entry point | Form route exists; technician UI does not expose it | #35 |
+| Plans, approved requirements/design, formal test artifacts, manuals, deployment guide | Not found in repository | #36 |
+| Database rules lack automated tests | Not covered by the current browser/unit test suite | No issue yet |
+| Password reset email delivery/redirect configuration | Source merged; live auth configuration unverified | #31 |
 
-The CI workflow runs: `bun install --frozen-lockfile`, lint, `tsc --noEmit`, tests, build.
+## Audit state
 
-## Known open items
-
-| Item | Tracked in |
-|---|---|
-| 7 `react-refresh/only-export-components` lint warnings | #15 |
-| No component tests for `StatusBadge`, `ComplaintTable`, `AssignDialog` | #14; PR #18 open from a fork, awaiting review and a first CI run |
-| Feature behaviour against a live Supabase project not verified end to end | #16 (FCA) |
-| Database rules (RLS policies, security-definer functions) have no automated tests | not yet raised |
-
-## Audits
-
-| Audit | State | Tracked in |
+| Audit | Status | Evidence |
 |---|---|---|
-| Functional Configuration Audit (FCA) | **Not yet performed** | #16 |
-| Physical Configuration Audit (PCA) | **Performed 2026-10-18**; lightweight tag discrepancy tracked in #24 | [PCA.md](PCA.md), #17 |
+| Functional Configuration Audit (FCA) | **Incomplete; no pass claimed** | [FCA.md](FCA.md); issue #16 lacks reproducible live evidence |
+| Physical Configuration Audit (PCA) | **Path inventory rechecked at `aeaf61e`** | [PCA.md](PCA.md); lightweight tag discrepancy remains |
+
+The project is not ready for a final `v0.1.0` baseline until its functional requirements and
+deliverables are verified, discrepancies resolved or formally accepted, and approvals recorded.

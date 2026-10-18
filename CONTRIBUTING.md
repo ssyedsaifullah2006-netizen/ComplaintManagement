@@ -11,7 +11,8 @@
    actually ran and the real results. Update `CHANGELOG.md` under **Unreleased**.
 6. **CI must be green** (the `CI` workflow).
 7. **Review:** another team member reviews and approves. The author does not approve their own pull request.
-8. **Merge** with a rebase merge so commit messages and authorship are preserved. Delete the branch.
+8. **Merge** using the repository's enabled merge method after review and green CI. Do not rewrite
+   published history; delete the branch after merging.
 
 ## Naming conventions
 
@@ -23,6 +24,7 @@
 | Issue title | same type prefix as the commit | `ci: add GitHub Actions workflow` |
 | Labels | `bug` `enhancement` `documentation` `test` `ci` `chore` `audit` `good first issue` | |
 | Configuration item | `CI-NN` | `CI-06` |
+| Logical CI name | `CCMS_<ModuleName>_<ItemType>_<Version>` | `CCMS_Complaint_SRC_v1.0` |
 | Tag | annotated `vMAJOR.MINOR.PATCH`; pre-release `vMAJOR.MINOR.PATCH-rc.N` | `v0.1.0-rc.1` |
 
 ## Rules
@@ -32,6 +34,8 @@
   `drizzle/schema.ts`) are not edited by hand.
 - Do not record a test, audit, review or release as done unless it was actually done.
 - Do not rewrite history on `main`.
+- A logical CI name does not replace a source path or establish approval. Record the exact source
+  revision by Git commit; record a release by package version and tag.
 
 ## Releases and baselines
 

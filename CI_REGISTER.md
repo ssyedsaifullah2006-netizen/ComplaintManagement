@@ -24,6 +24,38 @@ Package: `complaint-management` (version in `package.json`)
 
 ## Identification and control
 
+- SCM1 logical names follow `CCMS_<ModuleName>_<ItemType>_<Version>`. They identify a
+  configuration item; they do not replace repository paths or imply approval. The `v1.0` names
+  below are initial working identifiers, not approved baselines. Git commit IDs identify exact
+  source revisions; the package version and Git tag identify releases.
+
+| CI | SCM1 logical CI name(s) | Current state |
+|---|---|---|
+| CI-01 | `CCMS_User_SRC_v1.0`; `CCMS_Authentication_SRC_v1.0`; `CCMS_Complaint_SRC_v1.0`; `CCMS_Tracking_SRC_v1.0`; `CCMS_Notification_SRC_v1.0`; `CCMS_Administration_SRC_v1.0` | Implemented in source; not FCA/PCA-baselined as v1.0 |
+| CI-02 | `CCMS_Supabase_SRC_v1.0` | Generated integration source; regenerate, do not hand-edit |
+| CI-03 | `CCMS_Routing_SRC_v1.0` | Generated from file routes |
+| CI-04 | `CCMS_Database_DB_v1.0` | Migration scripts tracked; live application state requires separate verification |
+| CI-05 | `CCMS_DatabaseConfig_CFG_v1.0` | Tool/config files tracked; schema source intentionally generated/blank |
+| CI-06 | `CCMS_Dependencies_CFG_v1.0` | Manifest and lockfile tracked |
+| CI-07 | `CCMS_Build_CFG_v1.0` | Build configuration tracked |
+| CI-08 | `CCMS_Testing_TEST_v1.0` | Automated tests exist; a formal test plan/report is not present |
+| CI-09 | `CCMS_Quality_CFG_v1.0` | Lint/format configuration tracked |
+| CI-10 | `CCMS_CICD_CFG_v1.0` | GitHub Actions workflow tracked |
+| CI-11 | `CCMS_Environment_CFG_v1.0` | Variable-name template and ignore rules tracked; deployment secrets are not in Git |
+| CI-12 | `CCMS_Assets_ASSET_v1.0` | Public assets tracked |
+| CI-13 | `CCMS_ProjectDocs_DOC_v1.0` | General project documentation tracked; user/admin/deployment manuals are absent |
+| CI-14 | `CCMS_SCM_DOC_v1.0` | SCM register, process and status records tracked |
+| CI-15 | `CCMS_ChangeControl_CFG_v1.0` | GitHub issue/PR templates tracked |
+
+- These identifiers are a logical inventory layered over readable filenames. Do not rename
+  application paths to embed a CI name: paths are referenced by the router, imports, build, and
+  generated files. Record a CI's exact revision by its Git commit and PR instead.
+- The SCM1/SCM2 deliverables not currently present as repository artifacts include the project/SCM/
+  risk plans, approved SRS, HLD, LLD, UML and database-design documents, formal test plan/scripts/
+  defect report, user and administrator manuals, and deployment guide. Their absence is not
+  represented as completion or approval; see [SCM compliance](docs/SCM_COMPLIANCE.md).
+- Reporting is an SCM1 source-code category, but a dedicated reporting/export module is not
+  implemented. Do not assign it a released source CI until it exists.
 - Each configuration item is identified by the ID above. A change to a configuration item is made
   through an issue, a branch and a pull request (see [CONTRIBUTING.md](CONTRIBUTING.md)).
 - The version of the system is identified by the `version` in `package.json` and an annotated git tag

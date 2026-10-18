@@ -10,6 +10,7 @@ All notable changes to this project are recorded here. The format follows
 
 - Automatic technician assignment on complaint submission, preferring category matches and balancing active workload (#28).
 - Password recovery with emailed reset links and validated password updates (#30).
+- SCM1/SCM2 logical CI naming, evidence-based status accounting, and audit-gap records (#32).
 
 ### Changed
 
