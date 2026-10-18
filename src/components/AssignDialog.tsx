@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { Loader2, UserPlus } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { errMsg } from "@/lib/ccms";
+import { techniciansQuery } from "./technicians-query";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -22,19 +23,6 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-
-export const techniciansQuery = {
-  queryKey: ["technicians"],
-  queryFn: async () => {
-    const { data, error } = await supabase
-      .from("technicians")
-      .select(
-        "*, profile:profiles!technicians_user_id_fkey(full_name, email, phone), category:categories(name)",
-      );
-    if (error) throw error;
-    return data;
-  },
-};
 
 export function AssignDialog({
   complaintId,

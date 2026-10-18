@@ -7,7 +7,7 @@ import { Plus, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { meQuery, lookupsQuery, ROLE_LABEL, errMsg, type AppRole } from "@/lib/ccms";
 import { PageHeader, NoAccess, StatCard } from "@/components/AppShell";
-import { techniciansQuery } from "@/components/AssignDialog";
+import { techniciansQuery } from "@/components/technicians-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

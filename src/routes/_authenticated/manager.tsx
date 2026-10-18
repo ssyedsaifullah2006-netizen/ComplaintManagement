@@ -12,7 +12,8 @@ import {
 } from "@/lib/ccms";
 import { PageHeader, StatCard, NoAccess } from "@/components/AppShell";
 import { ComplaintList } from "@/components/ComplaintTable";
-import { AssignDialog, techniciansQuery } from "@/components/AssignDialog";
+import { AssignDialog } from "@/components/AssignDialog";
+import { techniciansQuery } from "@/components/technicians-query";
 import {
   Select,
   SelectContent,
