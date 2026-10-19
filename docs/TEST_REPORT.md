@@ -9,6 +9,7 @@
 | ------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
 | Main `236be48`                                         | PCA path inventory, ignored `.env` check, release tag object check | All registered paths present; `.env` not tracked; `v0.1.0-rc.1` is lightweight             |
 | PR #39 head `ee7156a35b1214aabb3a0ed18f37854d68c2a102` | CI workflow: frozen install, lint, typecheck, tests, build         | Passed (GitHub run 39249313487, completed 2026-10-19 12:05 UTC); suite: 6 files / 32 tests |
+| PR #40 head `cff73a08971f397ec16cee329cfb57a414f5a587` | CI workflow: frozen install, lint, typecheck, tests, build         | Passed (GitHub run 39250000423); documentation changes only                                |
 | PR #38 head `1e8483696852e642c12e53284612b2d9a0f04bda` | CI workflow                                                        | No checks reported by GitHub at review time; manual app check remains unchecked in the PR  |
 
 The PR #39 checks apply to its feature-branch revision, not current `main`. PR #39 remains open and
