@@ -1,8 +1,9 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ReactNode } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
+  BarChart3,
   Bell,
   ClipboardList,
   LayoutDashboard,
@@ -12,6 +13,7 @@ import {
   Wrench,
   Building2,
 } from "lucide-react";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { meQuery, unreadCountQuery, ROLE_LABEL, type AppRole } from "@/lib/ccms";
 import { cn } from "@/lib/utils";
@@ -24,10 +26,11 @@ const NAV: NavItem[] = [
     to: "/complaints",
     label: "My Complaints",
     icon: ClipboardList,
-    roles: ["student", "faculty", "estate_manager", "admin"],
+    roles: ["student", "faculty", "technician", "estate_manager", "admin"],
   },
   { to: "/technician", label: "My Jobs", icon: Wrench, roles: ["technician"] },
   { to: "/manager", label: "All Complaints", icon: Building2, roles: ["estate_manager", "admin"] },
+  { to: "/reports", label: "Reports", icon: BarChart3, roles: ["estate_manager", "admin"] },
   { to: "/admin", label: "Administration", icon: Shield, roles: ["admin"] },
   { to: "/notifications", label: "Notifications", icon: Bell },
 ];
@@ -39,6 +42,40 @@ export function AppShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
 
   const items = NAV.filter((n) => !n.roles || (me && n.roles.includes(me.role)));
+
+  useEffect(() => {
+    if (!me) return;
+    const channel = supabase
+      .channel(`complaint-updates:${me.id}`)
+      .on("postgres_changes", { event: "*", schema: "public", table: "complaints" }, (payload) => {
+        const id =
+          "new" in payload && payload.new && "id" in payload.new
+            ? payload.new["id"]
+            : "old" in payload && payload.old && "id" in payload.old
+              ? payload.old["id"]
+              : undefined;
+        void qc.invalidateQueries({ queryKey: ["complaints"] });
+        if (typeof id === "string") {
+          void qc.invalidateQueries({ queryKey: ["complaint", id] });
+        } else {
+          void qc.invalidateQueries({ queryKey: ["complaint"] });
+        }
+      })
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "complaint_updates" },
+        () => void qc.invalidateQueries({ queryKey: ["complaint"] }),
+      )
+      .subscribe((status) => {
+        if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
+          toast.error("Live complaint updates are unavailable. Refresh the page to see changes.");
+        }
+      });
+
+    return () => {
+      void supabase.removeChannel(channel);
+    };
+  }, [me, qc]);
 
   async function signOut() {
     await qc.cancelQueries();
