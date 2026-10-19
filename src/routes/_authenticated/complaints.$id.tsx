@@ -12,11 +12,13 @@ import {
   isStaff,
   errMsg,
   locationLabel,
+  slaDeadline,
+  DEFAULT_SLA_HOURS,
   STATUS_LABEL,
   type Status,
   type AppRole,
 } from "@/lib/ccms";
-import { StatusBadge, StatusTrack, PriorityTag } from "@/components/StatusBadge";
+import { StatusBadge, StatusTrack, PriorityTag, SlaBadge } from "@/components/StatusBadge";
 import { AssignDialog } from "@/components/AssignDialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -247,7 +249,19 @@ function Details() {
               v={`${c.reporter?.full_name ?? "—"}${c.reporter?.department ? ` (${c.reporter.department})` : ""}`}
             />
             <Info k="Filed" v={format(new Date(c.created_at), "d MMM yyyy, HH:mm")} />
-            <Info k="Target" v={`${c.category?.sla_hours ?? "—"}h response`} />
+            <div>
+              <p className="text-xs text-muted-foreground">Response target</p>
+              <p className="font-medium">
+                {format(slaDeadline(c), "d MMM yyyy, HH:mm")}
+                <span className="font-normal text-muted-foreground">
+                  {" "}
+                  ({c.category?.sla_hours ?? DEFAULT_SLA_HOURS}h)
+                </span>
+              </p>
+              <div className="mt-1">
+                <SlaBadge complaint={c} />
+              </div>
+            </div>
             <Info k="Technician" v={c.technician?.full_name ?? "Not assigned"} />
             {c.resolved_at && (
               <Info k="Resolved" v={format(new Date(c.resolved_at), "d MMM yyyy, HH:mm")} />

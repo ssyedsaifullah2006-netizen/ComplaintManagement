@@ -1,36 +1,16 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ReactNode } from "react";
-import { useState } from "react";
-import {
-  Bell,
-  ClipboardList,
-  LayoutDashboard,
-  LogOut,
-  Menu,
-  Shield,
-  Wrench,
-  Building2,
-} from "lucide-react";
+import { useEffect, useState } from "react";
+import { Bell, LogOut, Menu, Shield, Building2 } from "lucide-react";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { meQuery, unreadCountQuery, ROLE_LABEL, type AppRole } from "@/lib/ccms";
+import { meQuery, unreadCountQuery, ROLE_LABEL } from "@/lib/ccms";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-type NavItem = { to: string; label: string; icon: typeof Bell; roles?: AppRole[] };
-const NAV: NavItem[] = [
-  { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  {
-    to: "/complaints",
-    label: "My Complaints",
-    icon: ClipboardList,
-    roles: ["student", "faculty", "estate_manager", "admin"],
-  },
-  { to: "/technician", label: "My Jobs", icon: Wrench, roles: ["technician"] },
-  { to: "/manager", label: "All Complaints", icon: Building2, roles: ["estate_manager", "admin"] },
-  { to: "/admin", label: "Administration", icon: Shield, roles: ["admin"] },
-  { to: "/notifications", label: "Notifications", icon: Bell },
-];
+import { subscribeToComplaintUpdates } from "@/lib/complaint-realtime";
+import { visibleNavigation } from "@/components/navigation";
 export function AppShell({ children }: { children: ReactNode }) {
   const { data: me } = useQuery(meQuery);
   const { data: unread = 0 } = useQuery(unreadCountQuery(me?.id));
@@ -38,7 +18,14 @@ export function AppShell({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
-  const items = NAV.filter((n) => !n.roles || (me && n.roles.includes(me.role)));
+  const items = visibleNavigation(me?.role);
+
+  useEffect(() => {
+    if (!me) return;
+    return subscribeToComplaintUpdates(supabase, qc, me.id, () => {
+      toast.error("Live complaint updates are unavailable. Refresh the page to see changes.");
+    });
+  }, [me, qc]);
 
   async function signOut() {
     await qc.cancelQueries();
@@ -176,17 +163,35 @@ export function StatCard({
   value,
   hint,
   tone = "default",
+  onClick,
+  active,
 }: {
   label: string;
   value: number | string;
   hint?: string;
   tone?: "default" | "accent" | "ink";
+  onClick?: () => void;
+  active?: boolean;
 }) {
-  return (
-    <div className={cn("rounded-lg border bg-card p-5")}>
+  const body = (
+    <>
       <p className="text-sm text-muted-foreground">{label}</p>
       <p className="mt-2 font-display text-3xl font-semibold">{value}</p>
       {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
-    </div>
+    </>
+  );
+  if (!onClick) return <div className={cn("rounded-lg border bg-card p-5")}>{body}</div>;
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      className={cn(
+        "rounded-lg border bg-card p-5 text-left transition-colors hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        active && "border-primary ring-1 ring-primary",
+      )}
+    >
+      {body}
+    </button>
   );
 }

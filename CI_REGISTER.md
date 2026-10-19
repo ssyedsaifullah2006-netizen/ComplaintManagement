@@ -54,8 +54,8 @@ Package: `complaint-management` (version in `package.json`)
   project/SCM/risk plans, approved SRS, HLD, LLD, UML and database-design documents, approved test
   plan/scripts/defect report, and approved user/admin manuals and deployment guide. Draft guides
   and test records are not represented as approval; see [SCM compliance](docs/SCM_COMPLIANCE.md).
-- Reporting is an SCM1 source-code category. A reporting/export module is in open PR #39; do not
-  record it as part of the released main baseline until merged.
+- Reporting is an SCM1 source-code category. The reporting/export module (`src/routes/_authenticated/reports.tsx`)
+  was merged to `main` in PR #39; it has not been verified live, so do not record it as verified.
 - Each configuration item is identified by the ID above. A change to a configuration item is made
   through an issue, a branch and a pull request (see [CONTRIBUTING.md](CONTRIBUTING.md)).
 - The version of the system is identified by the `version` in `package.json` and an annotated git tag

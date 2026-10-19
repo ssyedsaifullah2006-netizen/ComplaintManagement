@@ -33,12 +33,13 @@ student/faculty; administrative role changes require an authorized admin session
 Technicians use **My Jobs** to see assigned active and completed work. They can toggle availability
 and move an assigned job to In Progress, then to Resolved. The database function
 `update_complaint_status` validates permitted transitions. The technician complaint-reporting entry
-point is part of open PR #39; verify after merge/deployment.
+point (**My Complaints** with **New complaint**) was added in PR #39 and is on `main`; verify it on
+the deployed app.
 
 ## Reports and audit trail
 
-Maintenance reports and CSV export are implemented in open PR #39, not the current `main` baseline.
-After merge, verify the route is staff-only, filters match the intended period/category/status, and
+Maintenance reports and CSV export were merged to `main` in PR #39 and have not yet been verified
+live. Verify the route is staff-only, filters match the intended period/category/status, and
 the downloaded CSV contains only authorized data.
 
 Complaint history and notification rows are written by database triggers/functions. Do not insert

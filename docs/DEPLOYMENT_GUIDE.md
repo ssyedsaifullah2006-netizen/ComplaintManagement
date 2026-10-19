@@ -27,8 +27,8 @@ project. Never put credentials in chat, source control, browser code, or screens
    Do not blindly rerun migrations or assume the Lovable project matches a local environment.
 2. Apply the repository migrations in order using the authorized project migration workflow. The
    automatic assignment migration is `drizzle/migrations/0001_auto_assign_complaints.sql`.
-3. Realtime publication migration `0002_enable_complaint_realtime.sql` is in open PR #39 and must
-   not be treated as applied until that PR is merged and its migration is run. Check that the
+3. Realtime publication migration `0002_enable_complaint_realtime.sql` is on `main` (PR #39) but
+   must not be treated as applied until it has been run against the project. Check that the
    `supabase_realtime` publication exists and verify table membership afterward.
 4. Confirm RLS is enabled and the database functions/triggers are present. Do not replace the
    security-definer status, assignment, or role functions with client-side updates.

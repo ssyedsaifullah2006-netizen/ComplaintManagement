@@ -38,12 +38,11 @@ baseline:
   document.
 - Approved formal test plan, executed test scripts, defect report, approved user/admin manuals, and
   approved deployment guide.
-- A dedicated maintenance-reporting/export module on `main` (implementation is in open PR #39).
 
 Automated tests and CI exist, but they are not equivalent to an approved test plan or a complete
 test report. Draft user/admin/deployment guides and a draft test plan are tracked under `docs/`;
 they do not establish approval or fill the missing approved project/SCM/risk plans and design
-baselines. Report generation/export is implemented in open PR #39 but is not yet part of `main`.
+baselines. Report generation/export was merged to `main` in PR #39 but is not yet verified live.
 The follow-up state is recorded in [docs/STATUS.md](STATUS.md).
 
 ## Change control, status accounting, and tools
@@ -76,14 +75,14 @@ are evidence of individual changes, not a complete ownership register for every 
 
 ## Product requirements with incomplete evidence
 
-| Requirement from SCM1                   | Current evidence                                                                                                                           | Status                                                                               |
-| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
-| Automatic routing by complaint category | Trigger migration in `drizzle/migrations/0001_auto_assign_complaints.sql`; concurrent fallback assignment was exercised on feature preview | Source behavior exercised; live migration state not independently inspected          |
-| Status tracking in real time            | Implementation and migration are in open PR #39                                                                                            | Not live-verified; migration unapplied; tracked in issue #36                         |
-| Maintenance reports and analytics       | Implementation and tests are in open PR #39                                                                                                | Not yet on `main` or live-verified; tracked in issue #33                             |
-| Technician complaint reporting          | PR #39 exposes My Complaints navigation to technicians; the complaint form already accepts authenticated users                             | Feature-preview technician submission exercised; PR not merged; tracked in issue #34 |
-| Password recovery                       | Supabase recovery and reset routes are in source; user confirmed email and password update                                                 | Exact redirect target/allow-list not independently captured                          |
-| Missing SCM deliverables                | Draft guides/test plan are tracked; approved plans, design baselines, and owner approvals remain absent                                    | Tracked in issue #35                                                                 |
+| Requirement from SCM1                   | Current evidence                                                                                                                           | Status                                                                             |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------- |
+| Automatic routing by complaint category | Trigger migration in `drizzle/migrations/0001_auto_assign_complaints.sql`; concurrent fallback assignment was exercised on feature preview | Source behavior exercised; live migration state not independently inspected        |
+| Status tracking in real time            | Implementation and migration merged to `main` in PR #39                                                                                    | Not live-verified; migration unapplied; tracked in issue #36                       |
+| Maintenance reports and analytics       | Implementation and tests merged to `main` in PR #39                                                                                        | Not live-verified; tracked in issue #33                                            |
+| Technician complaint reporting          | PR #39 exposes My Complaints navigation to technicians; the complaint form already accepts authenticated users                             | Merged (PR #39); feature-preview technician submission exercised; issue #34 closed |
+| Password recovery                       | Supabase recovery and reset routes are in source; user confirmed email and password update                                                 | Exact redirect target/allow-list not independently captured                        |
+| Missing SCM deliverables                | Draft guides/test plan are tracked; approved plans, design baselines, and owner approvals remain absent                                    | Tracked in issue #35                                                               |
 
 These statuses distinguish source implementation from live backend/deployment verification.
 
@@ -91,5 +90,5 @@ These statuses distinguish source implementation from live backend/deployment ve
 
 - SCM1 and SCM2 PDFs supplied by the project owner (not tracked in this repository).
 - `CI_REGISTER.md`, `CONTRIBUTING.md`, `docs/STATUS.md`, `docs/PCA.md`, current source and tests.
-- GitHub PRs #29 and #31 and their successful CI runs; current main baseline `236be48`.
-- Follow-up requests #33-#36 and open PRs #38-#39 for the identified product gaps and SCM deliverables.
+- GitHub PRs #29 and #31 and their successful CI runs; main baseline `236be48` (since advanced by PRs #38 and #39).
+- Follow-up requests #33-#36 and merged PRs #38-#39 for the identified product gaps and SCM deliverables.

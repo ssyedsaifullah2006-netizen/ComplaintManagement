@@ -17,6 +17,10 @@ prioritizing technicians with fewer active jobs. If no available technician matc
 the system falls back to another available technician; if nobody is available, the complaint stays
 registered for the estate manager to assign.
 
+Complaint and timeline changes refresh in real time when the database Realtime migration is applied.
+Estate managers and admins can filter maintenance reports and export matching complaint records as CSV.
+Technicians can register and track their own complaints alongside their assigned jobs.
+
 ## Tech stack
 
 React 19, TypeScript, Vite, TanStack Start / Router / Query, Tailwind CSS 4, Radix UI (shadcn-style
@@ -39,13 +43,13 @@ Use **Forgot password?** on the sign-in page to request a reset email and choose
 Configure the Supabase Auth redirect URL allow-list to include each local and deployed app origin
 at `/reset-password`.
 
-| Command | Purpose |
-|---|---|
-| `bun run dev` | Start the dev server |
-| `bun run build` | Production build |
-| `bun run lint` | ESLint (includes Prettier formatting rules) |
-| `bunx tsc --noEmit` | Type check |
-| `bun run test` | Unit tests (Vitest) |
+| Command             | Purpose                                     |
+| ------------------- | ------------------------------------------- |
+| `bun run dev`       | Start the dev server                        |
+| `bun run build`     | Production build                            |
+| `bun run lint`      | ESLint (includes Prettier formatting rules) |
+| `bunx tsc --noEmit` | Type check                                  |
+| `bun run test`      | Unit tests (Vitest)                         |
 
 ## Project status
 
@@ -56,16 +60,16 @@ traceability and known compliance gaps are recorded in [docs/SCM_COMPLIANCE.md](
 
 ## Software configuration management
 
-| Document | Purpose |
-|---|---|
-| [CONTRIBUTING.md](CONTRIBUTING.md) | Branching, commit and tag naming, pull requests, review, release rules |
-| [CI_REGISTER.md](CI_REGISTER.md) | Configuration items and their identifiers |
-| [docs/STATUS.md](docs/STATUS.md) | Configuration status accounting (changes, CI runs, audits, releases) |
-| [docs/SCM_COMPLIANCE.md](docs/SCM_COMPLIANCE.md) | SCM1/SCM2 mapping, evidence and known gaps |
-| [docs/FCA.md](docs/FCA.md) | Functional audit status and verification evidence |
-| [docs/PCA.md](docs/PCA.md) | Physical configuration audit |
-| [docs/USER_GUIDE.md](docs/USER_GUIDE.md) | Draft guide for complaint reporters |
-| [docs/ADMIN_GUIDE.md](docs/ADMIN_GUIDE.md) | Draft staff and administrator guide |
-| [docs/DEPLOYMENT_GUIDE.md](docs/DEPLOYMENT_GUIDE.md) | Draft setup and deployment instructions |
-| [docs/TEST_PLAN.md](docs/TEST_PLAN.md) / [docs/TEST_REPORT.md](docs/TEST_REPORT.md) | Draft verification plan and current execution evidence |
-| [CHANGELOG.md](CHANGELOG.md) | Notable changes per version |
+| Document                                                                            | Purpose                                                                |
+| ----------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| [CONTRIBUTING.md](CONTRIBUTING.md)                                                  | Branching, commit and tag naming, pull requests, review, release rules |
+| [CI_REGISTER.md](CI_REGISTER.md)                                                    | Configuration items and their identifiers                              |
+| [docs/STATUS.md](docs/STATUS.md)                                                    | Configuration status accounting (changes, CI runs, audits, releases)   |
+| [docs/SCM_COMPLIANCE.md](docs/SCM_COMPLIANCE.md)                                    | SCM1/SCM2 mapping, evidence and known gaps                             |
+| [docs/FCA.md](docs/FCA.md)                                                          | Functional audit status and verification evidence                      |
+| [docs/PCA.md](docs/PCA.md)                                                          | Physical configuration audit                                           |
+| [docs/USER_GUIDE.md](docs/USER_GUIDE.md)                                            | Draft guide for complaint reporters                                    |
+| [docs/ADMIN_GUIDE.md](docs/ADMIN_GUIDE.md)                                          | Draft staff and administrator guide                                    |
+| [docs/DEPLOYMENT_GUIDE.md](docs/DEPLOYMENT_GUIDE.md)                                | Draft setup and deployment instructions                                |
+| [docs/TEST_PLAN.md](docs/TEST_PLAN.md) / [docs/TEST_REPORT.md](docs/TEST_REPORT.md) | Draft verification plan and current execution evidence                 |
+| [CHANGELOG.md](CHANGELOG.md)                                                        | Notable changes per version                                            |

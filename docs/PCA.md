@@ -39,8 +39,8 @@ to a commit object, so it is lightweight rather than annotated as required by
 `CONTRIBUTING.md`. Issue #24 records the discrepancy; the published tag was not rewritten. Future
 release tags must be annotated.
 
-The audit baseline predates open PRs #38 and #39 and the draft documents added in this documentation
-PR. None of those later changes are represented in this PCA. The tracked project plans,
+The audit baseline predates merged PRs #38 and #39 and the draft documents added in this documentation
+PR. None of those later changes are represented in this PCA; rerun it at the final merged baseline. The tracked project plans,
 approved requirements/design documents, a formally approved test plan, and approval evidence remain
 outstanding. Draft user, admin, deployment, and test documents are not claimed as approved
 deliverables.
