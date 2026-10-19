@@ -2,16 +2,16 @@
 
 Tracks repository baselines, changes, CI results, audits, and unresolved configuration or product
 requirements. Status is evidence-based; a merged PR or green CI does not by itself prove live
-backend behavior or an approved product baseline. Last updated: 2026-10-18.
+backend behavior or an approved product baseline. Last updated: 2026-10-19.
 
 ## Baselines and releases
 
-| Version / baseline | Commit | State |
-|---|---|---|
-| Initial source | `4ed6332` | Initial repository source, version `0.0.0` |
-| `v0.1.0-rc.1` | `44803d3` | Published release candidate; tag is lightweight, not annotated. Not a final release |
-| Current main | `aeaf61e` | Includes merged PR #31; current package version remains `0.1.0-rc.1` |
-| `v0.1.0` | Pending | Do not tag until FCA evidence, PCA, release review, and dated changelog entry are complete |
+| Version / baseline | Commit    | State                                                                                      |
+| ------------------ | --------- | ------------------------------------------------------------------------------------------ |
+| Initial source     | `4ed6332` | Initial repository source, version `0.0.0`                                                 |
+| `v0.1.0-rc.1`      | `44803d3` | Published release candidate; tag is lightweight, not annotated. Not a final release        |
+| Current main       | `236be48` | Includes merged PR #37; current package version remains `0.1.0-rc.1`                       |
+| `v0.1.0`           | Pending   | Do not tag until FCA evidence, PCA, release review, and dated changelog entry are complete |
 
 `v0.1.0-rc.1` points to a commit object instead of an annotated tag object. Issue #24 records the
 policy discrepancy. The published tag will not be rewritten; use annotated tags for future releases.
@@ -27,28 +27,31 @@ of change control, not substitutes for named CI approval.
 
 ## Change and verification log
 
-| Issue | PR | Change | Repository/CI evidence | Live behavior evidence |
-|---|---|---|---|---|
-| #1-#7 | #8-#13 | Lockfile, lint, CI, tests, package identity, and SCM documentation | Recorded in the historical entries below and GitHub PRs | Not applicable to all items |
-| #14 | #22 | Component test proposal | PR closed without merge; no component test suite from that PR is present | Not applicable |
-| #15 | #23 | Resolve React Refresh lint warnings | Merged; CI passed | Not applicable |
-| #16 | — | Functional Configuration Audit | Issue closed after owner comment “everything is verified”; no reproducible FCA report/evidence was present at baseline | Incomplete / not independently evidenced |
-| #17 | #25 | Physical Configuration Audit | PCA recorded; rechecked against current main `aeaf61e` in [PCA.md](PCA.md) | Does not test live backend |
-| #20 | #21 | Prepare `v0.1.0-rc.1` | Merged; release candidate exists | Not applicable |
-| #24 | — | Record lightweight tag discrepancy | Closed; tag unchanged and remains lightweight | Not applicable |
-| #28 | #29 | Automatic technician assignment | Merged; main CI run `39117462892` passed | Owner reports migration applied through Lovable Cloud; not independently verified from this environment |
-| #30 | #31 | Password recovery | Merged; main CI run `39122094293` passed | Email delivery and deployed redirect allow-list not verified |
-| #32 | — | Align SCM records with SCM1/SCM2 | In progress in this pull request | Not applicable |
+| Issue         | PR     | Change                                                                  | Repository/CI evidence                                                                                                          | Live behavior evidence                                                                                  |
+| ------------- | ------ | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| #1-#7         | #8-#13 | Lockfile, lint, CI, tests, package identity, and SCM documentation      | Recorded in the historical entries below and GitHub PRs                                                                         | Not applicable to all items                                                                             |
+| #14           | #22    | Component test proposal                                                 | PR closed without merge; no component test suite from that PR is present                                                        | Not applicable                                                                                          |
+| #15           | #23    | Resolve React Refresh lint warnings                                     | Merged; CI passed                                                                                                               | Not applicable                                                                                          |
+| #16           | —      | Functional Configuration Audit                                          | Issue closed after owner comment “everything is verified”; no reproducible FCA report/evidence was present at baseline          | Incomplete / not independently evidenced                                                                |
+| #17           | #25    | Physical Configuration Audit                                            | Rechecked against current main `236be48` in [PCA.md](PCA.md)                                                                    | Does not test live backend                                                                              |
+| #20           | #21    | Prepare `v0.1.0-rc.1`                                                   | Merged; release candidate exists                                                                                                | Not applicable                                                                                          |
+| #24           | —      | Record lightweight tag discrepancy                                      | Closed; tag unchanged and remains lightweight                                                                                   | Not applicable                                                                                          |
+| #28           | #29    | Automatic technician assignment                                         | Merged; main CI run `39117462892` passed                                                                                        | Owner reports migration applied through Lovable Cloud; not independently verified from this environment |
+| #30           | #31    | Password recovery                                                       | Merged; main CI run `39122094293` passed                                                                                        | Email delivery and deployed redirect allow-list not verified                                            |
+| #32           | #37    | Align SCM records with SCM1/SCM2                                        | Merged; SCM mapping, status, and audit records updated                                                                          | Not applicable                                                                                          |
+| #33, #34, #36 | #39    | Reports/export, technician complaint entry, and realtime source changes | Open PR at `ee7156a`; CI run `39249313487` passed; awaiting review/merge                                                        | Reports/realtime not fully verified live; Realtime migration unapplied                                  |
+| #35           | —      | SCM project artifacts and manuals                                       | Open; draft guides and test records added in this documentation PR; owner approval and missing plans/designs remain outstanding | Not applicable                                                                                          |
+| #38           | #38    | SLA tracking response time                                              | Open PR; GitHub reported no checks at last review; manual check unchecked in PR                                                 | Not verified here                                                                                       |
 
 Historical initial-source checks (run 2026-10-17) are retained as a snapshot, not current results:
 
-| Check | Initial-source result |
-|---|---|
+| Check                           | Initial-source result                                         |
+| ------------------------------- | ------------------------------------------------------------- |
 | `bun install --frozen-lockfile` | Failed: lockfile pinned to a private package cache (HTTP 403) |
-| `bun run lint` | Failed: 715 errors and 7 warnings |
-| `bunx tsc --noEmit` | Passed |
-| `bun run test` | Passed: 1 routing test |
-| `bun run build` | Passed |
+| `bun run lint`                  | Failed: 715 errors and 7 warnings                             |
+| `bunx tsc --noEmit`             | Passed                                                        |
+| `bun run test`                  | Passed: 1 routing test                                        |
+| `bun run build`                 | Passed                                                        |
 
 The current CI workflow runs `bun install --frozen-lockfile`, lint, TypeScript checking, tests, and
 production build. The latest verified main runs after PR #29 and #31 passed: `39117462892` and
@@ -56,23 +59,27 @@ production build. The latest verified main runs after PR #29 and #31 passed: `39
 
 ## Open discrepancies and follow-up work
 
-| Gap | State | Tracked in |
-|---|---|---|
-| SCM1/SCM2 logical CI mapping, status accounting, tool claims, and audit evidence | This documentation change | #32 |
-| FCA evidence absent despite issue #16 being closed | FCA record explicitly incomplete; must be tested in the authorized live environment | #32 |
-| Reports/export and service-performance analytics | Manager dashboard has summary metrics only | #33 |
-| Real-time complaint updates | Current query polling is every 30 seconds | #34 |
-| Technician complaint reporting entry point | Form route exists; technician UI does not expose it | #35 |
-| Plans, approved requirements/design, formal test artifacts, manuals, deployment guide | Not found in repository | #36 |
-| Database rules lack automated tests | Not covered by the current browser/unit test suite | No issue yet |
-| Password reset email delivery/redirect configuration | Source merged; live auth configuration unverified | #31 |
+| Gap                                                                              | State                                                                                                                         | Tracked in   |
+| -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------ |
+| SCM1/SCM2 logical CI mapping, status accounting, tool claims, and audit evidence | This documentation change                                                                                                     | #32          |
+| FCA evidence absent despite issue #16 being closed                               | FCA record explicitly incomplete; must be tested in the authorized live environment                                           | #32          |
+| Reports/export and service-performance analytics                                 | Implemented on open PR #39; merge and live staff/output verification remain                                                   | #33 / PR #39 |
+| Real-time complaint updates                                                      | Client changes and migration are on open PR #39; migration is unapplied and delivery unverified                               | #36 / PR #39 |
+| Technician complaint reporting entry point                                       | PR #39 exposes My Complaints to technicians, where New complaint is available; confirm tests and live behavior before closure | #34 / PR #39 |
+| Project/SCM/risk plans, approved SRS/HLD/LLD/UML/database design                 | Not available from repository evidence; owner-provided approved source materials required                                     | #35          |
+| Test plan/report and user/admin/deployment manuals                               | Draft documents added; owner review/approval and check against final merged behavior required                                 | #35          |
+| Database rules lack automated tests                                              | Not covered by the current browser/unit test suite                                                                            | No issue yet |
+| Password reset email delivery/redirect configuration                             | User confirmed email and password update; exact redirect target/allow-list not independently captured                         | #31 / FCA    |
+| Previous release tag metadata                                                    | `v0.1.0-rc.1` is lightweight; preserve published tag and use annotated tags going forward                                     | #24          |
 
 ## Audit state
 
-| Audit | Status | Evidence |
-|---|---|---|
-| Functional Configuration Audit (FCA) | **Incomplete; no pass claimed** | [FCA.md](FCA.md); issue #16 lacks reproducible live evidence |
-| Physical Configuration Audit (PCA) | **Path inventory rechecked at `aeaf61e`** | [PCA.md](PCA.md); lightweight tag discrepancy remains |
+| Audit                                | Status                                    | Evidence                                                     |
+| ------------------------------------ | ----------------------------------------- | ------------------------------------------------------------ |
+| Functional Configuration Audit (FCA) | **Incomplete; no pass claimed**           | [FCA.md](FCA.md); issue #16 lacks reproducible live evidence |
+| Physical Configuration Audit (PCA)   | **Path inventory rechecked at `236be48`** | [PCA.md](PCA.md); lightweight tag discrepancy remains        |
 
-The project is not ready for a final `v0.1.0` baseline until its functional requirements and
-deliverables are verified, discrepancies resolved or formally accepted, and approvals recorded.
+The project is not ready for a final `v0.1.0` baseline. Merge/review open PRs, rerun the PCA at the
+resulting merged baseline, apply and verify the Realtime migration, finish live functional tests,
+resolve or formally accept outstanding SCM deliverables, record owner approvals, and update the
+dated changelog before release.

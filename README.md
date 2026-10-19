@@ -64,4 +64,8 @@ traceability and known compliance gaps are recorded in [docs/SCM_COMPLIANCE.md](
 | [docs/SCM_COMPLIANCE.md](docs/SCM_COMPLIANCE.md) | SCM1/SCM2 mapping, evidence and known gaps |
 | [docs/FCA.md](docs/FCA.md) | Functional audit status and verification evidence |
 | [docs/PCA.md](docs/PCA.md) | Physical configuration audit |
+| [docs/USER_GUIDE.md](docs/USER_GUIDE.md) | Draft guide for complaint reporters |
+| [docs/ADMIN_GUIDE.md](docs/ADMIN_GUIDE.md) | Draft staff and administrator guide |
+| [docs/DEPLOYMENT_GUIDE.md](docs/DEPLOYMENT_GUIDE.md) | Draft setup and deployment instructions |
+| [docs/TEST_PLAN.md](docs/TEST_PLAN.md) / [docs/TEST_REPORT.md](docs/TEST_REPORT.md) | Draft verification plan and current execution evidence |
 | [CHANGELOG.md](CHANGELOG.md) | Notable changes per version |
