@@ -163,17 +163,35 @@ export function StatCard({
   value,
   hint,
   tone = "default",
+  onClick,
+  active,
 }: {
   label: string;
   value: number | string;
   hint?: string;
   tone?: "default" | "accent" | "ink";
+  onClick?: () => void;
+  active?: boolean;
 }) {
-  return (
-    <div className={cn("rounded-lg border bg-card p-5")}>
+  const body = (
+    <>
       <p className="text-sm text-muted-foreground">{label}</p>
       <p className="mt-2 font-display text-3xl font-semibold">{value}</p>
       {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
-    </div>
+    </>
+  );
+  if (!onClick) return <div className={cn("rounded-lg border bg-card p-5")}>{body}</div>;
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      className={cn(
+        "rounded-lg border bg-card p-5 text-left transition-colors hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        active && "border-primary ring-1 ring-primary",
+      )}
+    >
+      {body}
+    </button>
   );
 }
