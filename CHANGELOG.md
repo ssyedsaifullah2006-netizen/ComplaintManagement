@@ -12,6 +12,7 @@ All notable changes to this project are recorded here. The format follows
 - Automatic technician assignment on complaint submission, preferring category matches and balancing active workload (#28).
 - Password recovery with emailed reset links and validated password updates (#30).
 - SCM1/SCM2 logical CI naming, evidence-based status accounting, and audit-gap records (#32).
+- Draft user, administrator, deployment guides and functional test records for project completion (#35).
 - Response-target (SLA) tracking: every complaint list and the complaint page show whether a ticket is on track, due soon, overdue, or met/missed its category target. The estate desk gains an "Overdue only" filter (also toggled from the "Past target time" card) and sorting by newest, oldest or due soonest. SLA rules live in `src/lib/ccms.ts` with unit tests.
 
 ### Changed

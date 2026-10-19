@@ -16,14 +16,14 @@ pull request; system releases are identified by `package.json`, changelog entrie
 
 The SCM1 hierarchy maps to the current source as follows:
 
-| SCM hierarchy level | CCMS example |
-|---|---|
-| System | Campus Complaint & Maintenance System (CCMS) |
-| Subsystem | Complaint management |
-| CSCI | Complaint registration and tracking |
-| TLCSC | Submission; categorization; lifecycle tracking |
-| LLCSC | Form validation, photo upload, category and location selection, status transitions |
-| CSU | Validation schemas and route handlers in `src/routes/_authenticated/complaints.new.tsx`; lifecycle rules in `src/lib/ccms.ts`; database ticket generation and rules in `drizzle/migrations/` |
+| SCM hierarchy level | CCMS example                                                                                                                                                                                 |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| System              | Campus Complaint & Maintenance System (CCMS)                                                                                                                                                 |
+| Subsystem           | Complaint management                                                                                                                                                                         |
+| CSCI                | Complaint registration and tracking                                                                                                                                                          |
+| TLCSC               | Submission; categorization; lifecycle tracking                                                                                                                                               |
+| LLCSC               | Form validation, photo upload, category and location selection, status transitions                                                                                                           |
+| CSU                 | Validation schemas and route handlers in `src/routes/_authenticated/complaints.new.tsx`; lifecycle rules in `src/lib/ccms.ts`; database ticket generation and rules in `drizzle/migrations/` |
 
 This is a repository-level mapping, not a substitute for the absent approved HLD, LLD, or UML
 artifacts.
@@ -36,14 +36,14 @@ baseline:
 
 - Project, SCM, and risk-management plans; approved SRS; HLD; LLD; UML diagrams; database-design
   document.
-- Formal test plan, test scripts, defect report, and user manual, administrator manual, and
-  deployment guide.
-- A dedicated maintenance-reporting/export module.
+- Approved formal test plan, executed test scripts, defect report, approved user/admin manuals, and
+  approved deployment guide.
 
-Automated tests and CI exist, but they are not equivalent to a separately approved test plan or
-test report. The SCM1 reporting requirement is only partially represented by dashboard counts and
-workload metrics; report generation/export is absent. The relevant follow-up items are recorded in
-the repository issue tracker; see [docs/STATUS.md](STATUS.md).
+Automated tests and CI exist, but they are not equivalent to an approved test plan or a complete
+test report. Draft user/admin/deployment guides and a draft test plan are tracked under `docs/`;
+they do not establish approval or fill the missing approved project/SCM/risk plans and design
+baselines. Report generation/export was merged to `main` in PR #39 but is not yet verified live.
+The follow-up state is recorded in [docs/STATUS.md](STATUS.md).
 
 ## Change control, status accounting, and tools
 
@@ -66,24 +66,23 @@ are evidence of individual changes, not a complete ownership register for every 
 - **FCA:** Issue #16 was closed after a comment said the features were verified, but no
   `docs/FCA.md`, test report, or reproducible live-test evidence was present at this audit. Treat
   the FCA as **not evidenced / incomplete**, not as a passed audit. See [FCA.md](FCA.md).
-- **PCA:** The existing PCA documented an earlier main commit. The repository inventory was
-  rechecked at `aeaf61e` (main after PR #31); the updated evidence is in [PCA.md](PCA.md). The
-  published `v0.1.0-rc.1` tag is lightweight, contrary to the annotated-tag convention; issue #24
-  documents the discrepancy. The published tag is not rewritten.
+- **PCA:** The repository inventory was rechecked at `236be48` (main after PR #37); evidence is in
+  [PCA.md](PCA.md). The published `v0.1.0-rc.1` tag is lightweight, contrary to the annotated-tag
+  convention; issue #24 documents the discrepancy. The published tag is not rewritten.
 - **Release baseline:** `v0.1.0-rc.1` is a release candidate only. It is not a final approved
   baseline. Do not claim a final release until FCA and PCA evidence and the required release
   approval are recorded.
 
 ## Product requirements with incomplete evidence
 
-| Requirement from SCM1 | Current evidence | Status |
-|---|---|---|
-| Automatic routing by complaint category | Trigger migration in `drizzle/migrations/0001_auto_assign_complaints.sql`; user reports it was applied to Lovable Cloud | Implemented in source; live state reported, not independently verified |
-| Status tracking in real time | Complaint queries poll every 30 seconds in `src/lib/ccms.ts` | Not real-time push updates; tracked in issue #34 |
-| Maintenance reports and analytics | Manager counts, overdue items, workload and resolution-time metric | Partial; no report/export workflow; tracked in issue #33 |
-| Technician complaint reporting | Complaint registration form supports authenticated users, but technician navigation/dashboard hides the entry point | Function exists at route level; discoverability tracked in issue #35 |
-| Password recovery | Supabase recovery and reset routes are in source; email delivery and deployed redirect allow-list are not tested here | Source implemented; live configuration unverified |
-| Missing SCM deliverables | Plans, approved requirements/design, formal test artifacts, manuals, and deployment guide are absent | Tracked in issue #36 |
+| Requirement from SCM1                   | Current evidence                                                                                                                           | Status                                                                             |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------- |
+| Automatic routing by complaint category | Trigger migration in `drizzle/migrations/0001_auto_assign_complaints.sql`; concurrent fallback assignment was exercised on feature preview | Source behavior exercised; live migration state not independently inspected        |
+| Status tracking in real time            | Implementation and migration merged to `main` in PR #39                                                                                    | Not live-verified; migration unapplied; tracked in issue #36                       |
+| Maintenance reports and analytics       | Implementation and tests merged to `main` in PR #39                                                                                        | Not live-verified; tracked in issue #33                                            |
+| Technician complaint reporting          | PR #39 exposes My Complaints navigation to technicians; the complaint form already accepts authenticated users                             | Merged (PR #39); feature-preview technician submission exercised; issue #34 closed |
+| Password recovery                       | Supabase recovery and reset routes are in source; user confirmed email and password update                                                 | Exact redirect target/allow-list not independently captured                        |
+| Missing SCM deliverables                | Draft guides/test plan are tracked; approved plans, design baselines, and owner approvals remain absent                                    | Tracked in issue #35                                                               |
 
 These statuses distinguish source implementation from live backend/deployment verification.
 
@@ -91,5 +90,5 @@ These statuses distinguish source implementation from live backend/deployment ve
 
 - SCM1 and SCM2 PDFs supplied by the project owner (not tracked in this repository).
 - `CI_REGISTER.md`, `CONTRIBUTING.md`, `docs/STATUS.md`, `docs/PCA.md`, current source and tests.
-- GitHub PRs #29 and #31 and their successful CI runs; current main baseline `aeaf61e`.
-- Follow-up requests #33-#36 for the identified product gaps and absent SCM deliverables.
+- GitHub PRs #29 and #31 and their successful CI runs; main baseline `236be48` (since advanced by PRs #38 and #39).
+- Follow-up requests #33-#36 and merged PRs #38-#39 for the identified product gaps and SCM deliverables.
