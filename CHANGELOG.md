@@ -8,7 +8,7 @@ All notable changes to this project are recorded here. The format follows
 
 ### Added
 
-- Staff maintenance reports with date/status/category filters and CSV export; complaint and timeline real-time refresh; technician access to their own complaints (#33-#35).
+- Staff maintenance reports with date/status/category filters and CSV export; complaint and timeline real-time refresh source changes (deferred and not live-verified); technician access to their own complaints (#33-#35).
 - Automatic technician assignment on complaint submission, preferring category matches and balancing active workload (#28).
 - Password recovery with emailed reset links and validated password updates (#30).
 - SCM1/SCM2 logical CI naming, evidence-based status accounting, and audit-gap records (#32).
@@ -18,6 +18,7 @@ All notable changes to this project are recorded here. The format follows
 ### Changed
 
 - Resolved the React Refresh lint warnings by moving the technician query out of `AssignDialog` and documenting the shadcn UI rule exception (#15).
+- Refreshed FCA/PCA and verification records against `main` baseline `223da99`; documented limited live report/workflow checks and the owner decision to defer Realtime push (#33, #36).
 
 ### Fixed
 

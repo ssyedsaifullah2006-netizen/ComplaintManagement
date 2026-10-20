@@ -3,20 +3,21 @@
 ## Re-audit of current main
 
 - **Auditor:** AI assistant using Copilot SDK in VS Code
-- **Date:** 2026-10-19
-- **Repository baseline:** `236be487cdd3c1999ba219555fc40dcf55e8238b` (`main`, current `origin/main`)
+- **Date:** 2026-10-20
+- **Repository baseline:** `223da99a533f12c00e0205c64ad88cb980f325d4` (`main`, after PRs #38–#40)
 - **Release identifier:** `v0.1.0-rc.1`
 
 ### Method
 
-Checked every path listed in the CI register at the stated baseline against that baseline's working tree,
-confirmed that `.env` is not tracked, and checked the package version and published tag object type.
-This is a path/configuration inventory only. It does not verify the live backend, the correctness or
-approval of documents, or changes still confined to open pull requests.
+Compared the CI register paths with `git ls-tree -r --name-only 223da99a533f12c00e0205c64ad88cb980f325d4`,
+confirmed `.env` is not tracked, and checked the package version and published tag object type.
+All registered file paths and directories were present; no registered path was missing. This is a
+path/configuration inventory only. It does not verify the live backend, the correctness or approval
+of documents, or formal release approval.
 
 ### Results
 
-| CI    | Result | Evidence at `236be48`                                              |
+| CI    | Result | Evidence at `223da99`                                               |
 | ----- | ------ | ------------------------------------------------------------------ |
 | CI-01 | Pass   | Registered source directories and entry files exist                |
 | CI-02 | Pass   | Supabase integration directory exists                              |
@@ -39,14 +40,12 @@ to a commit object, so it is lightweight rather than annotated as required by
 `CONTRIBUTING.md`. Issue #24 records the discrepancy; the published tag was not rewritten. Future
 release tags must be annotated.
 
-The audit baseline predates merged PRs #38 and #39 and the draft documents added in this documentation
-PR. None of those later changes are represented in this PCA; rerun it at the final merged baseline. The tracked project plans,
-approved requirements/design documents, a formally approved test plan, and approval evidence remain
-outstanding. Draft user, admin, deployment, and test documents are not claimed as approved
-deliverables.
+The tracked project/SCM/risk plans, approved requirements/design documents, formal test evidence,
+and stakeholder approval remain outstanding. The user, admin, deployment, and test documents are
+drafts and are not claimed as approved deliverables.
 
 ## Conclusion
 
-All paths registered at baseline `236be48` were present, and no `.env` was tracked. The lightweight
+All CI-register paths at baseline `223da99` were present, and no `.env` was tracked. The lightweight
 tag discrepancy remains. This PCA does not establish a final release baseline or substitute for
-the incomplete FCA recorded in [FCA.md](FCA.md).
+the partial FCA recorded in [FCA.md](FCA.md).
