@@ -42,7 +42,8 @@ baseline:
 Automated tests and CI exist, but they are not equivalent to an approved test plan or a complete
 test report. Draft user/admin/deployment guides and a draft test plan are tracked under `docs/`;
 they do not establish approval or fill the missing approved project/SCM/risk plans and design
-baselines. Report generation/export was merged to `main` in PR #39 but is not yet verified live.
+baselines. Report generation/export was merged to `main` in PR #39 and received limited live
+verification on 2026-10-20; it does not replace the missing approved artifacts.
 The follow-up state is recorded in [docs/STATUS.md](STATUS.md).
 
 ## Change control, status accounting, and tools
@@ -63,10 +64,10 @@ are evidence of individual changes, not a complete ownership register for every 
 
 ## Audit and release state
 
-- **FCA:** Issue #16 was closed after a comment said the features were verified, but no
-  `docs/FCA.md`, test report, or reproducible live-test evidence was present at this audit. Treat
-  the FCA as **not evidenced / incomplete**, not as a passed audit. See [FCA.md](FCA.md).
-- **PCA:** The repository inventory was rechecked at `236be48` (main after PR #37); evidence is in
+- **FCA:** Issue #16 was closed after a comment said the features were verified. A partial,
+  evidence-based follow-up is recorded in [FCA.md](FCA.md) and [TEST_REPORT.md](TEST_REPORT.md);
+  it is not a passed audit or release approval.
+- **PCA:** The repository inventory was rechecked at `223da99` (current main); evidence is in
   [PCA.md](PCA.md). The published `v0.1.0-rc.1` tag is lightweight, contrary to the annotated-tag
   convention; issue #24 documents the discrepancy. The published tag is not rewritten.
 - **Release baseline:** `v0.1.0-rc.1` is a release candidate only. It is not a final approved
@@ -78,8 +79,8 @@ are evidence of individual changes, not a complete ownership register for every 
 | Requirement from SCM1                   | Current evidence                                                                                                                           | Status                                                                             |
 | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------- |
 | Automatic routing by complaint category | Trigger migration in `drizzle/migrations/0001_auto_assign_complaints.sql`; concurrent fallback assignment was exercised on feature preview | Source behavior exercised; live migration state not independently inspected        |
-| Status tracking in real time            | Implementation and migration merged to `main` in PR #39                                                                                    | Not live-verified; migration unapplied; tracked in issue #36                       |
-| Maintenance reports and analytics       | Implementation and tests merged to `main` in PR #39                                                                                        | Not live-verified; tracked in issue #33                                            |
+| Real-time status push (optional)         | Client subscription and migration merged to `main` in PR #39                                                                               | Owner deferred as not required; migration unapplied; no push claim; issue #36 closed |
+| Maintenance reports and analytics       | Implementation and tests merged to `main` in PR #39                                                                                        | Reports, HVAC filter, and generated CSV content checked 2026-10-20; manager authorization/full criteria remain; issue #33 open |
 | Technician complaint reporting          | PR #39 exposes My Complaints navigation to technicians; the complaint form already accepts authenticated users                             | Merged (PR #39); feature-preview technician submission exercised; issue #34 closed |
 | Password recovery                       | Supabase recovery and reset routes are in source; user confirmed email and password update                                                 | Exact redirect target/allow-list not independently captured                        |
 | Missing SCM deliverables                | Draft guides/test plan are tracked; approved plans, design baselines, and owner approvals remain absent                                    | Tracked in issue #35                                                               |
@@ -90,5 +91,5 @@ These statuses distinguish source implementation from live backend/deployment ve
 
 - SCM1 and SCM2 PDFs supplied by the project owner (not tracked in this repository).
 - `CI_REGISTER.md`, `CONTRIBUTING.md`, `docs/STATUS.md`, `docs/PCA.md`, current source and tests.
-- GitHub PRs #29 and #31 and their successful CI runs; main baseline `236be48` (since advanced by PRs #38 and #39).
-- Follow-up requests #33-#36 and merged PRs #38-#39 for the identified product gaps and SCM deliverables.
+- GitHub PRs #29 and #31 and their successful CI runs; main baseline `223da99`, with CI run `39251935863`.
+- Follow-up requests #33-#36 and merged PRs #38-#40 for the identified product gaps and SCM deliverables.

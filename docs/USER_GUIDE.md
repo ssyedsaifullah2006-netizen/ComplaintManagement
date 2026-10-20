@@ -1,7 +1,7 @@
 # CCMS User Guide
 
-**Status:** Draft for owner review. Describes the repository at `main` commit `1f85c46`
-(includes merged PRs #38 and #39). Behavior not yet verified live is called out below.
+**Status:** Draft for owner review. Prepared against `main` baseline `223da99`
+(includes merged PRs #38–#40). Behavior not yet verified live is called out below.
 
 ## Account access
 
